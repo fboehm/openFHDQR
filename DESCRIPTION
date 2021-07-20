@@ -1,6 +1,6 @@
 Package: openFHDQR
 Type: Package
-Title: Fits penalized quantile regression models with ADMM algorithms of Gu et al. (2018)
+Title: Fits penalized quantile regression models with ADMM algorithms of Gu, et al. (2018)
 Version: 0.1.0.9000
 Author: Frederick J. Boehm
 Maintainer: Frederick J. Boehm <frederick.boehm@gmail.com>
