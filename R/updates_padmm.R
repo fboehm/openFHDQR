@@ -95,6 +95,11 @@ padmm_L1 <- function(beta0, z0, theta0, sigma, maxiter = 10 ^ 5, epsilon1 = 0.00
     old_beta <- beta
     beta <- new_beta
     ## step 2.2
+
+    ## step 2.3
+
+
+    ## check convergence criteria
     crit1 <- check_criterion1(X = X,
                               beta = beta,
                               z = z,
