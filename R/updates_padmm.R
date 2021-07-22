@@ -187,7 +187,7 @@ check_criterion2 <- function(sigma, X, z, old_z, epsilon1, epsilon2, theta){
 }
 
 
-#' Calculate l2 norm of a vector
+#' Calculate L2 norm of a vector
 #'
 #' @param x a vector
 #' @return a numeric vector of length one, the l2 norm of x
