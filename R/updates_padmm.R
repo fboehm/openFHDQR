@@ -67,13 +67,34 @@ update_theta_padmm <- function(theta, gamma, sigma, X, beta, z, y){
 #' @param beta0 initial value of beta
 #' @param z0 initial value of z
 #' @param theta0 initial value of theta
+#' @param sigma sigma constant, a positive number
+#' @param X design matrix
+#' @param eta eta constant
+#' @param y y vector
+#' @param lambda L1 penalty constant
+#' @param w weights vector
+#' @param tau quantile, a number between 0 and 1
+#' @param gamma gamma constant, affects the step length in the theta update step
 #' @param maxiter maximum number of iterations
 #' @param epsilon1 epsilon1 constant for stopping
 #' @param epsilon2 epsilon2 constant for stopping
-#' @return a list with three named components: beta, z, theta
+#' @return beta, the vector of coefficient estimates
 #' @export
 
-padmm_L1 <- function(beta0, z0, theta0, sigma, maxiter = 10 ^ 5, epsilon1 = 0.001, epsilon2 = 0.001){
+qr_padmm_L1 <- function(beta0,
+                        z0,
+                        theta0,
+                        sigma = 1,
+                        X,
+                        eta = 1,
+                        y,
+                        lambda,
+                        w,
+                        tau,
+                        gamma = 0.1,
+                        maxiter = 10 ^ 5,
+                        epsilon1 = 0.001,
+                        epsilon2 = 0.001){
   old_beta <- beta0
   old_z <- z0
   old_theta <- theta0
@@ -95,10 +116,24 @@ padmm_L1 <- function(beta0, z0, theta0, sigma, maxiter = 10 ^ 5, epsilon1 = 0.00
     old_beta <- beta
     beta <- new_beta
     ## step 2.2
-
+    new_z <- update_z_padmm(y = y,
+                            X = X,
+                            beta = beta,
+                            theta = theta,
+                            sigma = sigma,
+                            tau = tau)
+    old_z <- z
+    z <- new_z
     ## step 2.3
-
-
+    new_theta <- update_theta_padmm(theta = theta,
+                                    gamma = gamma,
+                                    sigma = sigma,
+                                    X = X,
+                                    beta = beta,
+                                    z = z,
+                                    y = y)
+    old_theta <- theta
+    theta <- new_theta
     ## check convergence criteria
     crit1 <- check_criterion1(X = X,
                               beta = beta,
@@ -115,6 +150,7 @@ padmm_L1 <- function(beta0, z0, theta0, sigma, maxiter = 10 ^ 5, epsilon1 = 0.00
                               theta = theta)
     iter <- iter + 1
   }
+  return(beta)
 }
 
 #' Check stopping criterion 1
