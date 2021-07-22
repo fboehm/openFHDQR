@@ -192,5 +192,7 @@ check_criterion2 <- function(sigma, X, z, old_z, epsilon1, epsilon2, theta){
 #' @param x a vector
 #' @return a numeric vector of length one, the l2 norm of x
 #' @export
+#' @references https://stackoverflow.com/questions/10933945/how-to-calculate-the-euclidean-norm-of-a-vector-in-r
+#'
 
 norm_vec <- function(x) sqrt(sum(x^2))
