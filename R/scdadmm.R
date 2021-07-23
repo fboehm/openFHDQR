@@ -69,7 +69,7 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
 qr_scdadmm_L1 <- function(beta0,
                         z0,
                         theta0,
-                        sigma = 1,
+                        sigma = 0.05,
                         X,
                         eta = 1,
                         y,

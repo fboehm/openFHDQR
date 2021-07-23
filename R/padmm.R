@@ -84,7 +84,7 @@ update_theta <- function(theta, gamma, sigma, X, beta, z, y){
 qr_padmm_L1 <- function(beta0,
                         z0,
                         theta0,
-                        sigma = 1,
+                        sigma = 0.05,
                         X,
                         eta = 1,
                         y,
