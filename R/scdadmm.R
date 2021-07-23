@@ -47,7 +47,7 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
   return(beta)
 }
 
-#' Perform proximal ADMM for weighted L1-penalized quantile regression
+#' Perform scd ADMM for weighted L1-penalized quantile regression
 #'
 #' @param beta0 initial value of beta
 #' @param z0 initial value of z
