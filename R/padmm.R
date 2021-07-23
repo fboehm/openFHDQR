@@ -24,7 +24,7 @@ update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
   return(new_beta)
 }
 
-#' Update z for the proximal ADMM for weighted L1-penalized quantile regression
+#' Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 #'
 #' @param y y vector
 #' @param X design matrix
@@ -36,7 +36,7 @@ update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
 #' @family proximal ADMM for weighted L1 penalized quantile regression
 #' @export
 
-update_z_padmm <- function(y, X, beta, theta, sigma, tau){
+update_z <- function(y, X, beta, theta, sigma, tau){
   new_z <- numeric()
   for (i in seq_along(y)){
     new_z[i] <- prox(xi = y[i] - X[i, ] * beta + theta[i] / sigma,
@@ -46,7 +46,7 @@ update_z_padmm <- function(y, X, beta, theta, sigma, tau){
   return(new_z)
 }
 
-#' Update theta for the proximal ADMM for weighted L1-penalized quantile regression
+#' Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 #'
 #' @param theta current state of theta (k)
 #' @param gamma gamma constant
@@ -58,7 +58,7 @@ update_z_padmm <- function(y, X, beta, theta, sigma, tau){
 #' @return updated theta vector
 #' @export
 
-update_theta_padmm <- function(theta, gamma, sigma, X, beta, z, y){
+update_theta <- function(theta, gamma, sigma, X, beta, z, y){
   return(theta - gamma * sigma * (X %*% beta + z - y))
 }
 
@@ -116,7 +116,7 @@ qr_padmm_L1 <- function(beta0,
     old_beta <- beta
     beta <- new_beta
     ## step 2.2
-    new_z <- update_z_padmm(y = y,
+    new_z <- update_z(y = y,
                             X = X,
                             beta = beta,
                             theta = theta,
@@ -125,7 +125,7 @@ qr_padmm_L1 <- function(beta0,
     old_z <- z
     z <- new_z
     ## step 2.3
-    new_theta <- update_theta_padmm(theta = theta,
+    new_theta <- update_theta(theta = theta,
                                     gamma = gamma,
                                     sigma = sigma,
                                     X = X,
