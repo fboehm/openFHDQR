@@ -13,8 +13,8 @@
 #' @export
 
 update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda, w){
-  xj <- X[ , index]
-  arg1 <- xj %*% (theta + sigma * (y - z - xj[- index] %*% beta[- index]))
+  xj <- X[, index] # jth column of X matrix
+  arg1 <- xj %*% (theta + sigma * (y - z - as.numeric(xj[- index] %*% beta[- index])))
   arg2 <- lambda * w[index]
   return(shrink(arg1, arg2) / (sigma * as.numeric((xj %*% xj))))
 }
@@ -63,19 +63,20 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
 #' @param maxiter maximum number of iterations
 #' @param epsilon1 epsilon1 constant for stopping
 #' @param epsilon2 epsilon2 constant for stopping
+#' @param epsilon3 tolerance for scd updating of beta
 #' @return beta, the vector of coefficient estimates
 #' @export
 
-qr_scdadmm_L1 <- function(beta0,
-                        z0,
-                        theta0,
+qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
+                          z0 = rep(1, nrow(X)),
+                          theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
                         X,
-                        eta = 1,
+                        eta = 1000,
                         y,
-                        lambda,
-                        w,
-                        tau,
+                        lambda = 1,
+                        w = rep(1, length(beta0)),
+                        tau = 0.5,
                         gamma = 0.1,
                         maxiter = 10 ^ 5,
                         epsilon1 = 0.001,
@@ -84,7 +85,7 @@ qr_scdadmm_L1 <- function(beta0,
   old_beta <- beta0
   old_z <- z0
   old_theta <- theta0
-  beta <- old_beta
+  beta <- old_beta + 1
   z <- old_z
   theta <- old_theta
   iter <- 0
@@ -136,6 +137,8 @@ qr_scdadmm_L1 <- function(beta0,
                               epsilon2 = epsilon2,
                               theta = theta)
     iter <- iter + 1
+    print(paste0("ITERATION: ", iter))
+    print(beta)
   }
   return(beta)
 }

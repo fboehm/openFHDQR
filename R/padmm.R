@@ -17,7 +17,7 @@ update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
   new_beta <- beta
   denom <- sigma * eta
   for (i in seq_along(beta)){
-    t1 <- (beta[i] + X[i, ] %*% (theta + sigma * y - sigma * X %*% beta - sigma * z)) / denom
+    t1 <- (beta[i] + X[, i] %*% (theta + sigma * y - sigma * X %*% beta - sigma * z)) / denom
     t2 <- lambda * w[i] / denom
     new_beta[i] <- shrink(t1, t2)
   }
@@ -39,7 +39,7 @@ update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
 update_z <- function(y, X, beta, theta, sigma, tau){
   new_z <- numeric()
   for (i in seq_along(y)){
-    new_z[i] <- prox(xi = y[i] - X[i, ] * beta + theta[i] / sigma,
+    new_z[i] <- prox(xi = y[i] - X[i, ] %*% beta + theta[i] / sigma,
                      alpha = length(y) * sigma,
                      tau = tau)
   }
@@ -52,8 +52,8 @@ update_z <- function(y, X, beta, theta, sigma, tau){
 #' @param gamma gamma constant
 #' @param sigma sigma constant
 #' @param X design matrix
-#' @param beta current state of beta (k + 1)
-#' @param z current state of z (k + 1)
+#' @param beta current state of beta, (k + 1)
+#' @param z current state of z, (k + 1)
 #' @param y y vector
 #' @return updated theta vector
 #' @export
@@ -81,18 +81,18 @@ update_theta <- function(theta, gamma, sigma, X, beta, z, y){
 #' @return beta, the vector of coefficient estimates
 #' @export
 
-qr_padmm_L1 <- function(beta0,
-                        z0,
-                        theta0,
+qr_padmm_L1 <- function(beta0 = rep(1, ncol(X)),
+                        z0 = rep(1, nrow(X)),
+                        theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
                         X,
-                        eta = 1,
+                        eta = 1000,
                         y,
-                        lambda,
-                        w,
-                        tau,
+                        lambda = 1,
+                        w = rep(1, length(beta0)),
+                        tau = 0.5,
                         gamma = 0.1,
-                        maxiter = 10 ^ 5,
+                        max_iter = 10 ^ 5,
                         epsilon1 = 0.001,
                         epsilon2 = 0.001){
   old_beta <- beta0
@@ -102,6 +102,7 @@ qr_padmm_L1 <- function(beta0,
   z <- old_z
   theta <- old_theta
   iter <- 0
+  crit1 <- FALSE; crit2 <- FALSE
   while(iter < max_iter & (!crit1 | !crit2)){
     ## Step 2.1
     new_beta <- update_beta_padmm(beta = beta,
@@ -149,6 +150,8 @@ qr_padmm_L1 <- function(beta0,
                               epsilon2 = epsilon2,
                               theta = theta)
     iter <- iter + 1
+    print(beta)
+    print(paste0("ITERATION: ", iter))
   }
   return(beta)
 }
