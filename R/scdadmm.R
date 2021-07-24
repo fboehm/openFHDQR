@@ -140,7 +140,6 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
                               epsilon2 = epsilon2,
                               theta = theta)
     iter <- iter + 1
-    print(paste0("ITERATION: ", iter))
   }
   return(beta)
 }
