@@ -17,7 +17,7 @@ update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
   new_beta <- beta
   denom <- sigma * eta
   for (i in seq_along(beta)){
-    t1 <- (beta[i] + X[, i] %*% (theta + sigma * y - sigma * X %*% beta - sigma * z)) / denom
+    t1 <- beta[i] + X[, i] %*% (theta + sigma * y - sigma * X %*% beta - sigma * z) / denom
     t2 <- lambda * w[i] / denom
     new_beta[i] <- shrink(t1, t2)
   }
