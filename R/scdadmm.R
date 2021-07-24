@@ -87,7 +87,7 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
   old_beta <- beta0
   old_z <- z0
   old_theta <- theta0
-  beta <- old_beta + 1
+  beta <- old_beta + 10 * epsilon3 # Consider other starting point!
   z <- old_z
   theta <- old_theta
   iter <- 0
