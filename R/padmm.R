@@ -150,10 +150,8 @@ qr_padmm_L1 <- function(beta0 = rep(1, ncol(X)),
                               epsilon2 = epsilon2,
                               theta = theta)
     iter <- iter + 1
-    print(beta)
-    print(paste0("ITERATION: ", iter))
   }
-  return(beta)
+  return(list(beta = beta, z = z, theta = theta))
 }
 
 #' Check stopping criterion 1
