@@ -81,12 +81,12 @@ update_theta <- function(theta, gamma, sigma, X, beta, z, y){
 #' @return beta, the vector of coefficient estimates
 #' @export
 
-qr_padmm_L1 <- function(beta0 = rep(1, ncol(X)),
+qr_padmm_L1 <- function(beta0 = rep(0, ncol(X)),
                         z0 = rep(1, nrow(X)),
                         theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
                         X,
-                        eta = 1000,
+                        eta = eigen(t(X) %*% X)$values[1],
                         y,
                         lambda = 1,
                         w = rep(1, length(beta0)),
@@ -98,7 +98,7 @@ qr_padmm_L1 <- function(beta0 = rep(1, ncol(X)),
   old_beta <- beta0
   old_z <- z0
   old_theta <- theta0
-  beta <- old_beta
+  beta <- old_beta + 0.001
   z <- old_z
   theta <- old_theta
   iter <- 0
@@ -150,6 +150,7 @@ qr_padmm_L1 <- function(beta0 = rep(1, ncol(X)),
                               epsilon2 = epsilon2,
                               theta = theta)
     iter <- iter + 1
+    print(beta)
   }
   return(list(beta = beta, z = z, theta = theta))
 }
