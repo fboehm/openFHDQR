@@ -45,8 +45,6 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
                                                  z = z,
                                                  lambda = lambda,
                                                  w = w)
-    print(paste0("INDEX: ", index))
-    print(beta)
   }
   return(beta)
 }
