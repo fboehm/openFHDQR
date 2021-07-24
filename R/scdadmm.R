@@ -14,7 +14,9 @@
 
 update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda, w){
   xj <- X[, index] # jth column of X matrix
-  arg1 <- xj %*% (theta + sigma * (y - z - as.numeric(xj[- index] %*% beta[- index])))
+  arg1a <- as.numeric(X[ , - index] %*% beta[- index])
+  arg1b <- theta + sigma * (y - z - arg1a)
+  arg1 <- as.numeric(xj %*% arg1b)
   arg2 <- lambda * w[index]
   return(shrink(arg1, arg2) / (sigma * as.numeric((xj %*% xj))))
 }
