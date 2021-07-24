@@ -81,8 +81,8 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
                         lambda = 1,
                         w = rep(1, length(beta0)),
                         tau = 0.5,
-                        gamma = 0.1,
-                        maxiter = 10 ^ 5,
+                        gamma = 1, # gamma is absent (ie, equal to 1) in scd admm
+                        max_iter = 10 ^ 5,
                         epsilon1 = 0.001,
                         epsilon2 = 0.001,
                         epsilon3 = 1 / 10 ^ 6){
@@ -93,6 +93,7 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
   z <- old_z
   theta <- old_theta
   iter <- 0
+  crit1 <- FALSE; crit2 <- FALSE
   while(iter < max_iter & (!crit1 | !crit2)){
     ## Step 2.1
     while(max(abs(beta - old_beta) > epsilon3)){
