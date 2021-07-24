@@ -45,6 +45,8 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
                                                  z = z,
                                                  lambda = lambda,
                                                  w = w)
+    print(paste0("INDEX: ", index))
+    print(beta)
   }
   return(beta)
 }
@@ -83,7 +85,7 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
                         maxiter = 10 ^ 5,
                         epsilon1 = 0.001,
                         epsilon2 = 0.001,
-                        epsilon3 = 0.001){
+                        epsilon3 = 1 / 10 ^ 6){
   old_beta <- beta0
   old_z <- z0
   old_theta <- theta0
