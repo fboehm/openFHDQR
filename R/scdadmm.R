@@ -16,19 +16,11 @@ update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, la
   xj <- X[, index] # jth column of X matrix
   n <- nrow(X)
   p <- ncol(X)
-  a1pre <- numeric() # to store outputs from loop below
+  chi <- numeric()
   for (i in 1:n){
-    vec1 <- numeric()
-    for (t in 1:p){
-      if (t == index){
-        vec1[t] <- NA
-      } else {
-        vec1[t] <- X[i, t] * beta[t]
-      }
-    }
-    a1pre[i] <- X[i, index] * (theta[i] + sigma * (y[i] - z[i] - sum(vec1, na.rm = TRUE)))
+    chi[i] <- theta[i] + sigma * (y[i] - z[i] - X[i, - index] %*% beta[- index])
   }
-  arg1 <- sum(a1pre)
+  arg1 <- X[ , index] %*% chi
   arg2 <- lambda * w[index]
   return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2))
 }
@@ -47,9 +39,9 @@ update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, la
 #' @export
 
 update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
-  for (index in seq_along(beta)){
-    beta[index] <- update_beta_component_scdadmm(beta = beta,
-                                                 index = index,
+  for (j in seq_along(beta)){
+    beta[j] <- update_beta_component_scdadmm(beta = beta,
+                                                 index = j,
                                                  X = X,
                                                  theta = theta,
                                                  sigma = sigma,
@@ -81,7 +73,7 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
 #' @return beta, the vector of coefficient estimates
 #' @export
 
-qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
+qr_scdadmm_L1 <- function(beta0 = rep(1, ncol(X)),
                           z0 = y - X %*% beta0,
                           theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
@@ -117,7 +109,6 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
                           w = w)
       old_beta <- beta
       beta <- new_beta
-      print(beta)
     }
     ## step 2.2
     new_z <- update_z(y = y,
