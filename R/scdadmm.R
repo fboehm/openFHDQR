@@ -14,11 +14,13 @@
 
 update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda, w){
   xj <- X[, index] # jth column of X matrix
-  arg1a <- as.numeric(X[ , - index] %*% beta[- index])
-  arg1b <- theta + sigma * (y - z - arg1a)
-  arg1 <- as.numeric(xj %*% arg1b)
+  a1pre <- numeric()
+  for (i in 1:n){
+    a1pre[i] <- xj[i] * (theta[i] + sigma * (y[i] - z[i] + sum(X[i, - index] * beta[- index])))
+  }
+  arg1 <- sum(a1pre)
   arg2 <- lambda * w[index]
-  return(shrink(arg1, arg2) / (sigma * as.numeric((xj %*% xj))))
+  return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2))
 }
 
 #' One update of beta with scd
@@ -70,11 +72,11 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
 #' @export
 
 qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
-                          z0 = rep(1, nrow(X)),
+                          z0 = y - X %*% beta0,
                           theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
                         X,
-                        eta = 1000,
+                        eta = eigen(t(X) %*% X)$values[1],
                         y,
                         lambda = 1,
                         w = rep(1, length(beta0)),
