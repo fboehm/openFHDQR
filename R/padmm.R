@@ -82,7 +82,7 @@ update_theta <- function(theta, gamma, sigma, X, beta, z, y){
 #' @export
 
 qr_padmm_L1 <- function(beta0 = rep(0, ncol(X)),
-                        z0 = rep(1, nrow(X)),
+                        z0 = y - X %*% beta0,
                         theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
                         X,
