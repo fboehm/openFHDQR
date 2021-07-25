@@ -14,9 +14,19 @@
 
 update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda, w){
   xj <- X[, index] # jth column of X matrix
-  a1pre <- numeric()
+  n <- nrow(X)
+  p <- ncol(X)
+  a1pre <- numeric() # to store outputs from loop below
   for (i in 1:n){
-    a1pre[i] <- xj[i] * (theta[i] + sigma * (y[i] - z[i] + sum(X[i, - index] * beta[- index])))
+    vec1 <- numeric()
+    for (t in 1:p){
+      if (t == index){
+        vec1[t] <- NA
+      } else {
+        vec1[t] <- X[i, t] * beta[t]
+      }
+    }
+    a1pre[i] <- X[i, index] * (theta[i] + sigma * (y[i] - z[i] - sum(vec1, na.rm = TRUE)))
   }
   arg1 <- sum(a1pre)
   arg2 <- lambda * w[index]
@@ -78,7 +88,7 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
                         X,
                         eta = eigen(t(X) %*% X)$values[1],
                         y,
-                        lambda = 1,
+                        lambda = 0.1,
                         w = rep(1, length(beta0)),
                         tau = 0.5,
                         gamma = 1, # gamma is absent (ie, equal to 1) in scd admm
@@ -107,6 +117,7 @@ qr_scdadmm_L1 <- function(beta0 = rep(0, ncol(X)),
                           w = w)
       old_beta <- beta
       beta <- new_beta
+      print(beta)
     }
     ## step 2.2
     new_z <- update_z(y = y,
