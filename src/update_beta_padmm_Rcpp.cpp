@@ -1,7 +1,7 @@
 #include <Rcpp.h>
+#include <Eigen/Dense>
 using namespace Rcpp;
 using namespace RcppEigen;
-#include <Eigen/Dense>
 using namespace Eigen;
 
 
@@ -17,8 +17,6 @@ using namespace Eigen;
 //' @param z current value of z vector
 //' @param lambda L1 penalty parameter
 //' @param w weights vector
-//' @export
-// [[Rcpp::export(rng = false)]]
 
 Eigen::VectorXd update_beta_padmm_Rcpp(Eigen::VectorXd beta,
                                            Eigen::MatrixXd X,
