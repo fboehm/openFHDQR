@@ -10,11 +10,7 @@
 #' @return a n-vector for use in updating a component of beta
 
 calc_chi <- function(beta, index, X, theta, sigma, y, z){
-  chi <- numeric()
-  for (i in 1:nrow(X)){
-    chi[i] <- theta[i] + sigma * (y[i] - z[i] - X[i, - index] %*% beta[- index])
-  }
-  return(chi)
+  return(theta + sigma * (y - z - as.numeric(X[, - index] %*% beta[- index])))
 }
 
 #' Update component of beta with coordinate descent
@@ -33,9 +29,8 @@ calc_chi <- function(beta, index, X, theta, sigma, y, z){
 
 update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda, w){
   xj <- X[, index] # jth column of X matrix
-  n <- nrow(X)
   chi <- calc_chi(beta = beta, index = index, X = X, theta = theta, sigma = sigma, y = y, z = z)
-  arg1 <- X[ , index] %*% chi
+  arg1 <- as.numeric(xj %*% chi)
   arg2 <- lambda * w[index]
   return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2))
 }
