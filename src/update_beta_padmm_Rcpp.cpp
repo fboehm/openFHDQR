@@ -1,6 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 using namespace RcppEigen;
+#include <Eigen/Dense>
+using namespace Eigen;
+
 
 
 //' Update beta vector for pADMM with weighted L1 penalty
@@ -17,15 +20,27 @@ using namespace RcppEigen;
 //' @export
 // [[Rcpp::export(rng = false)]]
 
-Rcpp::NumericVector update_beta_padmm_Rcpp(Rcpp::NumericVector beta,
-                                           Rcpp::NumericMatrix X,
-                                           Rcpp::NumericVector theta,
+Eigen::VectorXd update_beta_padmm_Rcpp(Eigen::VectorXd beta,
+                                           Eigen::MatrixXd X,
+                                           Eigen::VectorXd theta,
                                            double sigma,
                                            double eta,
-                                           Rcpp::NumericVector y,
-                                           Rcpp::NumericVector z,
+                                           Eigen::VectorXd y,
+                                           Eigen::VectorXd z,
                                            double lambda,
-                                           Rcpp::NumericVector w){
+                                           Eigen::VectorXd w){
+  Eigen::VectorXd new_beta = beta;
+  double denom = sigma * eta;
+  for (int i = 0; i < X.rows(); i++) {
+
+
+
+  }
+
+
+
+
+
 
 }
 
