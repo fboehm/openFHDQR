@@ -102,7 +102,7 @@ qr_scdadmm_L1 <- function(beta0 = rep(1, ncol(X)),
                         max_iter = 10 ^ 5,
                         epsilon1 = 0.001,
                         epsilon2 = 0.001,
-                        epsilon3 = 1 / 10 ^ 6){
+                        epsilon3 = 0.001){
   old_beta <- beta0
   old_z <- z0
   old_theta <- theta0
@@ -126,7 +126,10 @@ qr_scdadmm_L1 <- function(beta0 = rep(1, ncol(X)),
       old_beta <- beta
       beta <- new_beta
       iter2 <- iter2 + 1
-      if (iter2 %% 10 == 0) print(iter2)
+      if (iter2 %% 10 == 0) {
+        print(iter2)
+        print(beta)
+      }
     }
     ## step 2.2
     new_z <- update_z(y = y,
