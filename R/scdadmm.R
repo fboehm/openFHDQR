@@ -1,3 +1,22 @@
+#' Calculate chi vector
+#'
+#' @param beta current state of beta vector
+#' @param index indicates which component of beta to update
+#' @param X design matrix
+#' @param theta current value of theta vector
+#' @param sigma sigma constant
+#' @param y y vector
+#' @param z current value of z vector
+#' @return a n-vector for use in updating a component of beta
+
+calc_chi <- function(beta, index, X, theta, sigma, y, z){
+  chi <- numeric()
+  for (i in 1:nrow(X)){
+    chi[i] <- theta[i] + sigma * (y[i] - z[i] - X[i, - index] %*% beta[- index])
+  }
+  return(chi)
+}
+
 #' Update component of beta with coordinate descent
 #'
 #' @param beta current value of beta vector, ie, a scalar
@@ -15,11 +34,7 @@
 update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda, w){
   xj <- X[, index] # jth column of X matrix
   n <- nrow(X)
-  p <- ncol(X)
-  chi <- numeric()
-  for (i in 1:n){
-    chi[i] <- theta[i] + sigma * (y[i] - z[i] - X[i, - index] %*% beta[- index])
-  }
+  chi <- calc_chi(beta = beta, index = index, X = X, theta = theta, sigma = sigma, y = y, z = z)
   arg1 <- X[ , index] %*% chi
   arg2 <- lambda * w[index]
   return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2))
@@ -98,7 +113,8 @@ qr_scdadmm_L1 <- function(beta0 = rep(1, ncol(X)),
   crit1 <- FALSE; crit2 <- FALSE
   while(iter < max_iter & (!crit1 | !crit2)){
     ## Step 2.1
-    while(max(abs(beta - old_beta) > epsilon3)){
+    iter2 <- 0
+    while(iter2 < max_iter & max(abs(beta - old_beta) > epsilon3)){
       new_beta <- update_beta_scdadmm(beta = beta,
                           X = X,
                           theta = theta,
@@ -109,24 +125,26 @@ qr_scdadmm_L1 <- function(beta0 = rep(1, ncol(X)),
                           w = w)
       old_beta <- beta
       beta <- new_beta
+      iter2 <- iter2 + 1
+      if (iter2 %% 10 == 0) print(iter2)
     }
     ## step 2.2
     new_z <- update_z(y = y,
-                            X = X,
-                            beta = beta,
-                            theta = theta,
-                            sigma = sigma,
-                            tau = tau)
+                      X = X,
+                      beta = beta,
+                      theta = theta,
+                      sigma = sigma,
+                      tau = tau)
     old_z <- z
     z <- new_z
     ## step 2.3
     new_theta <- update_theta(theta = theta,
-                                    gamma = gamma,
-                                    sigma = sigma,
-                                    X = X,
-                                    beta = beta,
-                                    z = z,
-                                    y = y)
+                              gamma = gamma,
+                              sigma = sigma,
+                              X = X,
+                              beta = beta,
+                              z = z,
+                              y = y)
     old_theta <- theta
     theta <- new_theta
     ## check convergence criteria
