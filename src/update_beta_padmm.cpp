@@ -1,6 +1,6 @@
 #include <Rcpp.h>
 #include <Eigen/Dense>
-#include <shrink.cpp>
+#include "shrink.cpp"
 using namespace Rcpp;
 using namespace RcppEigen;
 using namespace Eigen;
@@ -18,6 +18,7 @@ using namespace Eigen;
 //' @param z current value of z vector
 //' @param lambda L1 penalty parameter
 //' @param w weights vector
+//' @return updated beta vector for pADMM, as an Eigen::VectorXd object
 
 Eigen::VectorXd update_beta_padmm_Rcpp(Eigen::VectorXd beta,
                                            Eigen::MatrixXd X,
