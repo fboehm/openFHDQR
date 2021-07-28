@@ -13,7 +13,7 @@
 #' @family proximal ADMM for weighted L1 penalized quantile regression
 #' @export
 
-update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
+update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
   new_beta <- beta
   denom <- sigma * eta
   for (i in seq_along(beta)){
@@ -36,7 +36,7 @@ update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
 #' @family proximal ADMM for weighted L1 penalized quantile regression
 #' @export
 
-update_z <- function(y, X, beta, theta, sigma, tau){
+update_zR <- function(y, X, beta, theta, sigma, tau){
   new_z <- numeric()
   for (i in seq_along(y)){
     new_z[i] <- prox(xi = y[i] - X[i, ] %*% beta + theta[i] / sigma,
@@ -58,7 +58,7 @@ update_z <- function(y, X, beta, theta, sigma, tau){
 #' @return updated theta vector
 #' @export
 
-update_theta <- function(theta, gamma, sigma, X, beta, z, y){
+update_thetaR <- function(theta, gamma, sigma, X, beta, z, y){
   return(theta - gamma * sigma * (X %*% beta + z - y))
 }
 

@@ -9,6 +9,10 @@ prox <- function(xi, alpha, tau) {
     .Call(`_openFHDQR_prox`, xi, alpha, tau)
 }
 
+update_z <- function(y, Xbeta, theta, sigma, tau) {
+    .Call(`_openFHDQR_update_z`, y, Xbeta, theta, sigma, tau)
+}
+
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
     .Call('_openFHDQR_RcppExport_registerCCallable', PACKAGE = 'openFHDQR')

@@ -2,7 +2,7 @@
 #include <cmath>        // std::abs
 #include<algorithm>
 #include<iostream>
-
+#include "shrink.cpp"
 using namespace Rcpp;
 
 
@@ -17,26 +17,20 @@ using namespace Rcpp;
 //' @return updated z vector
 //' @family proximal ADMM for weighted L1 penalized quantile regression
 //' @export
-
-Eigen::VectorXd update_z(Eigen::VectorXd y,
-                         Eigen::MatrixXd Xbeta,
-                         Eigen::VectorXd theta,
-                         double sigma,
-                         double tau){
-  Eigen::VectorXd new_z = y;
-  for(int i = 0; i < y.size(); i++){
-    new_z[i] = prox(y[i] - Xbeta[i] + theta[i] / sigma, sigma * y.size(), tau)
+// [[Rcpp::interfaces(r, cpp)]]
+// [[Rcpp::export]]
+Rcpp::NumericVector update_z(Rcpp::NumericVector y,
+                             Rcpp::NumericVector Xbeta,
+                             Rcpp::NumericVector theta,
+                             double sigma,
+                             double tau){
+  std::size_t n = y.size();
+  Rcpp::NumericVector new_z(n);
+  Rcpp::NumericVector arg1 = y - Xbeta + theta / sigma;
+  for(std::size_t i = 0; i < n; ++i){
+    new_z[i] = prox(arg1[i], sigma * n, tau);
   }
+  return new_z;
 }
 
 
-
-update_z <- function(y, X, beta, theta, sigma, tau){
-  new_z <- numeric()
-  for (i in seq_along(y)){
-    new_z[i] <- prox(xi = y[i] - X[i, ] %*% beta + theta[i] / sigma,
-                     alpha = length(y) * sigma,
-                     tau = tau)
-  }
-  return(new_z)
-}
