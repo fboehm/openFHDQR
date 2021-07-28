@@ -1,5 +1,6 @@
 #include <Rcpp.h>
 #include <Eigen/Dense>
+#include <shrink.cpp>
 using namespace Rcpp;
 using namespace RcppEigen;
 using namespace Eigen;

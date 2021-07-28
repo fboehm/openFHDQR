@@ -3,39 +3,22 @@
 
 #include <RcppEigen.h>
 #include <Rcpp.h>
+#include <string>
+#include <set>
 
 using namespace Rcpp;
 
-#ifdef RCPP_USE_GLOBAL_ROSTREAM
-Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
-Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
-#endif
 
-// update_beta_padmm_Rcpp
-Eigen::VectorXd update_beta_padmm_Rcpp(Eigen::VectorXd beta, Eigen::MatrixXd X, Eigen::VectorXd theta, double sigma, double eta, Eigen::VectorXd y, Eigen::VectorXd z, double lambda, Eigen::VectorXd w);
-RcppExport SEXP _openFHDQR_update_beta_padmm_Rcpp(SEXP betaSEXP, SEXP XSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP zSEXP, SEXP lambdaSEXP, SEXP wSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type z(zSEXP);
-    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type w(wSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_beta_padmm_Rcpp(beta, X, theta, sigma, eta, y, z, lambda, w));
-    return rcpp_result_gen;
-END_RCPP
+// validate (ensure exported C++ functions exist before calling them)
+static int _openFHDQR_RcppExport_validate(const char* sig) { 
+    static std::set<std::string> signatures;
+    if (signatures.empty()) {
+    }
+    return signatures.find(sig) != signatures.end();
 }
 
-static const R_CallMethodDef CallEntries[] = {
-    {"_openFHDQR_update_beta_padmm_Rcpp", (DL_FUNC) &_openFHDQR_update_beta_padmm_Rcpp, 9},
-    {NULL, NULL, 0}
-};
-
-RcppExport void R_init_openFHDQR(DllInfo *dll) {
-    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(dll, FALSE);
+// registerCCallable (register entry points for exported C++ functions)
+RcppExport SEXP _openFHDQR_RcppExport_registerCCallable() { 
+    R_RegisterCCallable("openFHDQR", "_openFHDQR_RcppExport_validate", (DL_FUNC)_openFHDQR_RcppExport_validate);
+    return R_NilValue;
 }
