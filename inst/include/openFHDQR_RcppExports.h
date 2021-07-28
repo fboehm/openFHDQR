@@ -25,6 +25,48 @@ namespace openFHDQR {
         }
     }
 
+    inline double shrink(double u, double alpha) {
+        typedef SEXP(*Ptr_shrink)(SEXP,SEXP);
+        static Ptr_shrink p_shrink = NULL;
+        if (p_shrink == NULL) {
+            validateSignature("double(*shrink)(double,double)");
+            p_shrink = (Ptr_shrink)R_GetCCallable("openFHDQR", "_openFHDQR_shrink");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_shrink(Shield<SEXP>(Rcpp::wrap(u)), Shield<SEXP>(Rcpp::wrap(alpha)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double prox(double xi, double alpha, double tau) {
+        typedef SEXP(*Ptr_prox)(SEXP,SEXP,SEXP);
+        static Ptr_prox p_prox = NULL;
+        if (p_prox == NULL) {
+            validateSignature("double(*prox)(double,double,double)");
+            p_prox = (Ptr_prox)R_GetCCallable("openFHDQR", "_openFHDQR_prox");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_prox(Shield<SEXP>(Rcpp::wrap(xi)), Shield<SEXP>(Rcpp::wrap(alpha)), Shield<SEXP>(Rcpp::wrap(tau)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
 }
 
 #endif // RCPP_openFHDQR_RCPPEXPORTS_H_GEN_
