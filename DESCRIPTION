@@ -8,6 +8,7 @@ Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: MIT + file LICENSE
 Encoding: UTF-8
+SystemRequirements: C++11
 LazyData: true
 RoxygenNote: 7.1.1
 LinkingTo: 
