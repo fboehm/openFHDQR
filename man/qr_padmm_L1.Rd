@@ -5,18 +5,18 @@
 \title{Perform proximal ADMM for weighted L1-penalized quantile regression}
 \usage{
 qr_padmm_L1(
-  beta0,
-  z0,
-  theta0,
-  sigma = 1,
+  beta0 = rep(0, ncol(X)),
+  z0 = y - X \%*\% beta0,
+  theta0 = rep(1, nrow(X)),
+  sigma = 0.05,
   X,
-  eta = 1,
+  eta = eigen(t(X) \%*\% X)$values[1],
   y,
-  lambda,
-  w,
-  tau,
+  lambda = 1,
+  w = rep(1, length(beta0)),
+  tau = 0.5,
   gamma = 0.1,
-  maxiter = 10^5,
+  max_iter = 10^5,
   epsilon1 = 0.001,
   epsilon2 = 0.001
 )
@@ -44,11 +44,11 @@ qr_padmm_L1(
 
 \item{gamma}{gamma constant, affects the step length in the theta update step}
 
-\item{maxiter}{maximum number of iterations}
-
 \item{epsilon1}{epsilon1 constant for stopping}
 
 \item{epsilon2}{epsilon2 constant for stopping}
+
+\item{maxiter}{maximum number of iterations}
 }
 \value{
 beta, the vector of coefficient estimates

@@ -15,9 +15,9 @@ update_theta(theta, gamma, sigma, X, beta, z, y)
 
 \item{X}{design matrix}
 
-\item{beta}{current state of beta (k + 1)}
+\item{beta}{current state of beta, (k + 1)}
 
-\item{z}{current state of z (k + 1)}
+\item{z}{current state of z, (k + 1)}
 
 \item{y}{y vector}
 }
