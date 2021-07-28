@@ -85,44 +85,6 @@ RcppExport SEXP _openFHDQR_prox(SEXP xiSEXP, SEXP alphaSEXP, SEXP tauSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
-// update_z
-Rcpp::NumericVector update_z(Rcpp::NumericVector y, Rcpp::NumericVector Xbeta, Rcpp::NumericVector theta, double sigma, double tau);
-static SEXP _openFHDQR_update_z_try(SEXP ySEXP, SEXP XbetaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type Xbeta(XbetaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_z(y, Xbeta, theta, sigma, tau));
-    return rcpp_result_gen;
-END_RCPP_RETURN_ERROR
-}
-RcppExport SEXP _openFHDQR_update_z(SEXP ySEXP, SEXP XbetaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
-    SEXP rcpp_result_gen;
-    {
-        Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_openFHDQR_update_z_try(ySEXP, XbetaSEXP, thetaSEXP, sigmaSEXP, tauSEXP));
-    }
-    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
-    if (rcpp_isInterrupt_gen) {
-        UNPROTECT(1);
-        Rf_onintr();
-    }
-    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
-    if (rcpp_isLongjump_gen) {
-        Rcpp::internal::resumeJump(rcpp_result_gen);
-    }
-    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
-    if (rcpp_isError_gen) {
-        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
-        UNPROTECT(1);
-        Rf_error(CHAR(rcpp_msgSEXP_gen));
-    }
-    UNPROTECT(1);
-    return rcpp_result_gen;
-}
 
 // validate (ensure exported C++ functions exist before calling them)
 static int _openFHDQR_RcppExport_validate(const char* sig) { 
@@ -130,7 +92,6 @@ static int _openFHDQR_RcppExport_validate(const char* sig) {
     if (signatures.empty()) {
         signatures.insert("double(*shrink)(double,double)");
         signatures.insert("double(*prox)(double,double,double)");
-        signatures.insert("Rcpp::NumericVector(*update_z)(Rcpp::NumericVector,Rcpp::NumericVector,Rcpp::NumericVector,double,double)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -139,7 +100,6 @@ static int _openFHDQR_RcppExport_validate(const char* sig) {
 RcppExport SEXP _openFHDQR_RcppExport_registerCCallable() { 
     R_RegisterCCallable("openFHDQR", "_openFHDQR_shrink", (DL_FUNC)_openFHDQR_shrink_try);
     R_RegisterCCallable("openFHDQR", "_openFHDQR_prox", (DL_FUNC)_openFHDQR_prox_try);
-    R_RegisterCCallable("openFHDQR", "_openFHDQR_update_z", (DL_FUNC)_openFHDQR_update_z_try);
     R_RegisterCCallable("openFHDQR", "_openFHDQR_RcppExport_validate", (DL_FUNC)_openFHDQR_RcppExport_validate);
     return R_NilValue;
 }
@@ -147,7 +107,6 @@ RcppExport SEXP _openFHDQR_RcppExport_registerCCallable() {
 static const R_CallMethodDef CallEntries[] = {
     {"_openFHDQR_shrink", (DL_FUNC) &_openFHDQR_shrink, 2},
     {"_openFHDQR_prox", (DL_FUNC) &_openFHDQR_prox, 3},
-    {"_openFHDQR_update_z", (DL_FUNC) &_openFHDQR_update_z, 5},
     {"_openFHDQR_RcppExport_registerCCallable", (DL_FUNC) &_openFHDQR_RcppExport_registerCCallable, 0},
     {NULL, NULL, 0}
 };

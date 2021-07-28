@@ -1,8 +1,8 @@
-#include "shrink.cpp"
 #include <Rcpp.h>
 #include <cmath>        // std::abs
 #include<algorithm>
 #include<iostream>
+#include <vector>
 using namespace Rcpp;
 
 
@@ -17,20 +17,21 @@ using namespace Rcpp;
 //' @family proximal ADMM for weighted L1 penalized quantile regression
 //' @export
 // [[Rcpp::interfaces(r, cpp)]]
-// [[Rcpp::export]]
-Rcpp::NumericVector update_z(Rcpp::NumericVector y,
-                             Rcpp::NumericVector Xbeta,
-                             Rcpp::NumericVector theta,
-                             double sigma,
-                             double tau)
-  {
-  const int n = y.size();
-  Rcpp::NumericVector new_z(n);
-  Rcpp::NumericVector arg1 = y - Xbeta + theta / sigma;
-  for(int i = 0; i < n; ++i){
-    new_z[i] = prox(arg1[i], sigma * n, tau);
-  }
-  return new_z;
-}
+//Rcpp::NumericVector update_z(Rcpp::NumericVector y,
+//void update_z(Rcpp::NumericVector y,
+//         Rcpp::NumericVector Xbeta,
+//                             Rcpp::NumericVector theta,
+//                             double sigma,
+//                             double tau)
+//  {
+//  const int n = y.length();
+//  Rcpp::NumericVector new_z(n);
+//  Rcpp::NumericVector arg1 = y - Xbeta + theta / sigma;
+//  for(int i = 0; i < n; ++i){
+//    new_z[i] = prox(arg1[i], sigma * n, tau);
+//  }
+
+//  return new_z;
+//}
 
 
