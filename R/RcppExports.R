@@ -20,6 +20,24 @@ prox <- function(xi, alpha, tau) {
     .Call(`_openFHDQR_prox`, xi, alpha, tau)
 }
 
+#' Update beta for the proximal ADMM for weighted L1-penalized quantile regression
+#'
+#' @param beta current state of the beta parameter vector
+#' @param X design matrix
+#' @param theta current state of theta vector
+#' @param sigma sigma constant, numeric vector of length 1
+#' @param eta eta constant, numeric vector of length 1
+#' @param y outcome vector
+#' @param z current state of z vector
+#' @param lambda lambda penalty parameter
+#' @param w weights vector
+#' @return updated beta vector
+#' @family proximal ADMM for weighted L1 penalized quantile regression
+#' @export
+update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w) {
+    .Call(`_openFHDQR_update_beta_padmm`, beta, X, theta, sigma, eta, y, z, lambda, w)
+}
+
 #' Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 #'
 #' @param theta current state of theta (k)

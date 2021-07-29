@@ -81,7 +81,7 @@ update_thetaR <- function(theta, gamma, sigma, X, beta, z, y){
 #' @return beta, the vector of coefficient estimates
 #' @export
 
-qr_padmm_L1 <- function(beta0 = rep(0, ncol(X)),
+padmm_L1R <- function(beta0 = rep(0, ncol(X)),
                         z0 = y - X %*% beta0,
                         theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
