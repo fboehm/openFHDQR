@@ -9,6 +9,23 @@ prox <- function(xi, alpha, tau) {
     .Call(`_openFHDQR_prox`, xi, alpha, tau)
 }
 
+#' Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
+#'
+#' @param theta current state of theta (k)
+#' @param gamma gamma constant
+#' @param sigma sigma constant
+#' @param X design matrix
+#' @param beta current state of beta, (k + 1)
+#' @param z current state of z, (k + 1)
+#' @param y y vector
+#' @return updated theta vector
+#' @export
+NULL
+
+update_theta <- function(theta, gamma, sigma, X, beta, z, y) {
+    .Call(`_openFHDQR_update_theta`, theta, gamma, sigma, X, beta, z, y)
+}
+
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
     .Call('_openFHDQR_RcppExport_registerCCallable', PACKAGE = 'openFHDQR')

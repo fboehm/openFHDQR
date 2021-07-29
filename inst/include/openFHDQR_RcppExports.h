@@ -67,6 +67,27 @@ namespace openFHDQR {
         return Rcpp::as<double >(rcpp_result_gen);
     }
 
+    inline Eigen::VectorXd update_theta(Eigen::VectorXd theta, double gamma, double sigma, Eigen::MatrixXd X, Eigen::VectorXd beta, Eigen::VectorXd z, Eigen::VectorXd y) {
+        typedef SEXP(*Ptr_update_theta)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_update_theta p_update_theta = NULL;
+        if (p_update_theta == NULL) {
+            validateSignature("Eigen::VectorXd(*update_theta)(Eigen::VectorXd,double,double,Eigen::MatrixXd,Eigen::VectorXd,Eigen::VectorXd,Eigen::VectorXd)");
+            p_update_theta = (Ptr_update_theta)R_GetCCallable("openFHDQR", "_openFHDQR_update_theta");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_update_theta(Shield<SEXP>(Rcpp::wrap(theta)), Shield<SEXP>(Rcpp::wrap(gamma)), Shield<SEXP>(Rcpp::wrap(sigma)), Shield<SEXP>(Rcpp::wrap(X)), Shield<SEXP>(Rcpp::wrap(beta)), Shield<SEXP>(Rcpp::wrap(z)), Shield<SEXP>(Rcpp::wrap(y)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<Eigen::VectorXd >(rcpp_result_gen);
+    }
+
 }
 
 #endif // RCPP_openFHDQR_RCPPEXPORTS_H_GEN_
