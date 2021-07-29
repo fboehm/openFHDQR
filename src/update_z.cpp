@@ -8,6 +8,7 @@
 
 
 // [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::interfaces(r, cpp)]]
 
 using namespace Rcpp;
 using namespace RcppEigen;
@@ -22,15 +23,15 @@ using namespace RcppEigen;
 //' @return updated z vector
 //' @family proximal ADMM for weighted L1 penalized quantile regression
 //' @export
-// [[Rcpp::interfaces(r, cpp)]]
-Eigen::VectorXd update_z(Eigen::VectorXd y,
-                         Eigen::VectorXd Xbeta,
-                         Eigen::VectorXd theta,
+// [[Rcpp::export]]
+Rcpp::NumericVector update_z(Rcpp::NumericVector y,
+                             Rcpp::NumericVector Xbeta,
+                             Rcpp::NumericVector theta,
                          double sigma,
                          double tau){
   const int n = y.size();
-  Eigen::VectorXd new_z(n);
-  Eigen::VectorXd arg1 = y - Xbeta + theta / sigma;
+  Rcpp::NumericVector new_z(n);
+  Rcpp::NumericVector arg1 = y - Xbeta + theta / sigma;
   for(int i = 0; i < n; ++i){
     new_z[i] = prox(arg1[i], sigma * n, tau);
   }
