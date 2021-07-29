@@ -2,6 +2,7 @@
 #include <cmath>        // std::abs
 #include<algorithm>
 #include<iostream>
+#include "shrink.h"
 
 using namespace Rcpp;
 
