@@ -33,7 +33,3 @@ Eigen::VectorXd toVectorXd(Rcpp::NumericVector x){
 // (useful for testing and development). The R code will be automatically
 // run after the compilation.
 //
-
-/*** R
-timesTwo(42)
-*/
