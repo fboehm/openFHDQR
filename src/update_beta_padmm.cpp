@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include <RcppEigen.h>
 #include "shrink.h"
+#include "convert.h"
 using namespace Rcpp;
 using namespace RcppEigen;
 
@@ -28,7 +29,7 @@ using namespace RcppEigen;
 //' @family proximal ADMM for weighted L1 penalized quantile regression
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta,
+Eigen::VectorXd update_beta_padmm(Eigen::VectorXd beta,
                                       Eigen::MatrixXd X,
                                       Eigen::VectorXd theta,
                                       double sigma,
@@ -37,20 +38,21 @@ Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta,
                                       Eigen::VectorXd z,
                                       double lambda,
                                       Eigen::VectorXd w){
-  int p = beta.size();
-  Rcpp::NumericVector new_beta = beta;
+  Rcpp::NumericVector beta_nv = toNumericVector(beta);
+  int p = beta_nv.size();
+  Rcpp::NumericVector new_beta = beta_nv;
   double denom = sigma * eta;
-  Eigen::Map<Eigen::MatrixXd> beta_Eigen = Rcpp::as<Eigen::Map<Eigen::MatrixXd> >(beta);
-  Eigen::VectorXd Xbeta = X * beta_Eigen;
+  Eigen::VectorXd Xbeta = X * beta;
   Eigen::VectorXd arg2 = (theta + sigma * y - sigma * Xbeta - sigma * z) / denom;
   double ld = lambda / denom;
   Eigen::VectorXd t1vec = beta + X * arg2;
+  Rcpp::NumericVector t1vec_nv = toNumericVector(t1vec);
   for (int i = 0; i < p; ++i){
-    double t1 = t1vec[i];
+    double t1 = t1vec_nv[i];
     double t2 = ld * w[i];
     new_beta[i] <- shrink(t1, t2);
   }
-  return new_beta;
+  return toVectorXd(new_beta);
 }
 
 
