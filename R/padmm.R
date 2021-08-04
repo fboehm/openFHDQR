@@ -7,13 +7,15 @@
 #' @param eta eta constant, numeric vector of length 1
 #' @param y outcome vector
 #' @param z current state of z vector
-#' @param lambda lambda penalty parameter
-#' @param w weights vector
+#' @param lambda1 lambda1 penalty parameter
+#' @param lambda2 lambda2 penalty parameter
+#' @param w weights vector with lambda1
+#' @param nu weights vector with lambda2
 #' @return updated beta vector
-#' @family proximal ADMM for weighted L1 penalized quantile regression
+#' @family proximal ADMM for weighted elastic net penalized quantile regression
 #' @export
 
-update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda, w){
+update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda1, lambda2 = 0, w, nu){
   new_beta <- beta
   denom <- sigma * eta
   for (i in seq_along(beta)){
