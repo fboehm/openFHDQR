@@ -25,6 +25,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// toNumericMatrix
+NumericMatrix toNumericMatrix(Eigen::MatrixXd X);
+RcppExport SEXP _openFHDQR_toNumericMatrix(SEXP XSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
+    rcpp_result_gen = Rcpp::wrap(toNumericMatrix(X));
+    return rcpp_result_gen;
+END_RCPP
+}
 // toVectorXd
 Eigen::VectorXd toVectorXd(Rcpp::NumericVector x);
 RcppExport SEXP _openFHDQR_toVectorXd(SEXP xSEXP) {
@@ -33,6 +44,17 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(toVectorXd(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// toMatrixXd
+Eigen::MatrixXd toMatrixXd(Rcpp::NumericMatrix X);
+RcppExport SEXP _openFHDQR_toMatrixXd(SEXP XSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    rcpp_result_gen = Rcpp::wrap(toMatrixXd(X));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -108,20 +130,20 @@ RcppExport SEXP _openFHDQR_prox(SEXP xiSEXP, SEXP alphaSEXP, SEXP tauSEXP) {
     return rcpp_result_gen;
 }
 // update_beta_padmm
-Eigen::VectorXd update_beta_padmm(Eigen::VectorXd beta, Eigen::MatrixXd X, Eigen::VectorXd theta, double sigma, double eta, Eigen::VectorXd y, Eigen::VectorXd z, double lambda, Eigen::VectorXd w);
+Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta, Rcpp::NumericMatrix X, Rcpp::NumericVector theta, double sigma, double eta, Rcpp::NumericVector y, Rcpp::NumericVector z, double lambda, Rcpp::NumericVector w);
 RcppExport SEXP _openFHDQR_update_beta_padmm(SEXP betaSEXP, SEXP XSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP zSEXP, SEXP lambdaSEXP, SEXP wSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type z(zSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type z(zSEXP);
     Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type w(wSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type w(wSEXP);
     rcpp_result_gen = Rcpp::wrap(update_beta_padmm(beta, X, theta, sigma, eta, y, z, lambda, w));
     return rcpp_result_gen;
 END_RCPP
@@ -229,7 +251,9 @@ RcppExport SEXP _openFHDQR_RcppExport_registerCCallable() {
 
 static const R_CallMethodDef CallEntries[] = {
     {"_openFHDQR_toNumericVector", (DL_FUNC) &_openFHDQR_toNumericVector, 1},
+    {"_openFHDQR_toNumericMatrix", (DL_FUNC) &_openFHDQR_toNumericMatrix, 1},
     {"_openFHDQR_toVectorXd", (DL_FUNC) &_openFHDQR_toVectorXd, 1},
+    {"_openFHDQR_toMatrixXd", (DL_FUNC) &_openFHDQR_toMatrixXd, 1},
     {"_openFHDQR_shrink", (DL_FUNC) &_openFHDQR_shrink, 2},
     {"_openFHDQR_prox", (DL_FUNC) &_openFHDQR_prox, 3},
     {"_openFHDQR_update_beta_padmm", (DL_FUNC) &_openFHDQR_update_beta_padmm, 9},

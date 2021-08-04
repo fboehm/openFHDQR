@@ -5,8 +5,16 @@ toNumericVector <- function(x) {
     .Call(`_openFHDQR_toNumericVector`, x)
 }
 
+toNumericMatrix <- function(X) {
+    .Call(`_openFHDQR_toNumericMatrix`, X)
+}
+
 toVectorXd <- function(x) {
     .Call(`_openFHDQR_toVectorXd`, x)
+}
+
+toMatrixXd <- function(X) {
+    .Call(`_openFHDQR_toMatrixXd`, X)
 }
 
 #' Soft shrinkage operator per Gu et al. 2018

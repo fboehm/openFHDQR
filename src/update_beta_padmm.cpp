@@ -1,9 +1,7 @@
 #include <Rcpp.h>
-#include <RcppEigen.h>
 #include "shrink.h"
-#include "convert.h"
+#include "matrix.h"
 using namespace Rcpp;
-using namespace RcppEigen;
 
 // This is a simple example of exporting a C++ function to R. You can
 // source this function into an R session using the Rcpp::sourceCpp
@@ -29,30 +27,27 @@ using namespace RcppEigen;
 //' @family proximal ADMM for weighted L1 penalized quantile regression
 //' @export
 // [[Rcpp::export]]
-Eigen::VectorXd update_beta_padmm(Eigen::VectorXd beta,
-                                      Eigen::MatrixXd X,
-                                      Eigen::VectorXd theta,
+Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta,
+                                      Rcpp::NumericMatrix X,
+                                      Rcpp::NumericVector theta,
                                       double sigma,
                                       double eta,
-                                      Eigen::VectorXd y,
-                                      Eigen::VectorXd z,
+                                      Rcpp::NumericVector y,
+                                      Rcpp::NumericVector z,
                                       double lambda,
-                                      Eigen::VectorXd w){
-  Rcpp::NumericVector beta_nv = toNumericVector(beta);
-  int p = beta_nv.size();
-  Rcpp::NumericVector new_beta = beta_nv;
+                                      Rcpp::NumericVector w){
+  int p = beta.size();
+  Rcpp::NumericVector new_beta(p);
   double denom = sigma * eta;
-  Eigen::VectorXd Xbeta = X * beta;
-  Eigen::VectorXd arg2 = (theta + sigma * y - sigma * Xbeta - sigma * z) / denom;
+  Rcpp::NumericVector arg2 = (theta + sigma * y - sigma * matrix_x_vector(X, beta) - sigma * z) / denom;
   double ld = lambda / denom;
-  Eigen::VectorXd t1vec = beta + X * arg2;
-  Rcpp::NumericVector t1vec_nv = toNumericVector(t1vec);
+  Rcpp::NumericVector t1vec = beta + X.transpose() * arg2; //check this!
   for (int i = 0; i < p; ++i){
-    double t1 = t1vec_nv[i];
+    double t1 = t1vec[i];
     double t2 = ld * w[i];
     new_beta[i] <- shrink(t1, t2);
   }
-  return toVectorXd(new_beta);
+  return new_beta;
 }
 
 
