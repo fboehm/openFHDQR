@@ -1,21 +1,21 @@
 #' Calculate chi vector
 #'
 #' @param beta current state of beta vector
-#' @param index indicates which component of beta to update
-#' @param X design matrix
-#' @param theta current value of theta vector
+#' @param j indicates which component of beta to update
+#' @param Xrow ith row of design matrix
+#' @param thetai ith entry of current value of theta vector
 #' @param sigma sigma constant
-#' @param y y vector
-#' @param z current value of z vector
-#' @return a n-vector for use in updating a component of beta
+#' @param yi ith component of y vector
+#' @param zi ith component of current value of z vector
+#' @return a 1-vector for use in updating a component of beta
 
-calc_chi <- function(beta, index, X, theta, sigma, y, z){
-  return(theta + sigma * (y - z - as.numeric(X[, - index] %*% beta[- index])))
+calc_chii <- function(beta, j, Xrow, thetai, sigma, yi, zi){
+  return(thetai + sigma * (yi - zi - as.numeric(Xrow[- j] %*% beta[- j])))
 }
 
 #' Update component of beta with coordinate descent
 #'
-#' @param beta current value of beta vector, ie, a scalar
+#' @param beta current value of beta vector
 #' @param index an integer from 1 to p, indicating the index of beta for the update
 #' @param X design matrix
 #' @param theta current value of theta vector
@@ -27,12 +27,15 @@ calc_chi <- function(beta, index, X, theta, sigma, y, z){
 #' @return update of one component of beta
 #' @export
 
-update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda, w){
+update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda1, lambda2, w, nu){
   xj <- X[, index] # jth column of X matrix
-  chi <- calc_chi(beta = beta, index = index, X = X, theta = theta, sigma = sigma, y = y, z = z)
+  chi <- numeric()
+  for (i in seq_along(theta)){
+    chi[i] <- calc_chii(beta = beta, j = index, Xrow = X[i, ], thetai = theta[i], sigma = sigma, yi = y[i], zi = z[i])
+  }
   arg1 <- as.numeric(xj %*% chi)
-  arg2 <- lambda * w[index]
-  return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2))
+  arg2 <- lambda1 * w[index]
+  return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2 + lambda2 * nu[index]))
 }
 
 #' One update of beta with scd
@@ -83,7 +86,7 @@ update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
 #' @return beta, the vector of coefficient estimates
 #' @export
 
-qr_scdadmm_L1 <- function(beta0 = rep(1, ncol(X)),
+scdadmmR <- function(beta0 = rep(1, ncol(X)),
                           z0 = y - X %*% beta0,
                           theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
