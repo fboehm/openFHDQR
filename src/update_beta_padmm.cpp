@@ -1,6 +1,5 @@
 #include <Rcpp.h>
 #include "shrink.h"
-#include "matrix.h"
 using namespace Rcpp;
 
 // This is a simple example of exporting a C++ function to R. You can
@@ -39,9 +38,9 @@ Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta,
   int p = beta.size();
   Rcpp::NumericVector new_beta(p);
   double denom = sigma * eta;
-  Rcpp::NumericVector arg2 = (theta + sigma * y - sigma * matrix_x_vector(X, beta) - sigma * z) / denom;
+  Rcpp::NumericVector arg2 = (theta + sigma * y - sigma * X * beta - sigma * z) / denom;
   double ld = lambda / denom;
-  Rcpp::NumericVector t1vec = beta + X.transpose() * arg2; //check this!
+  Rcpp::NumericVector t1vec = beta + X * arg2; //check this!
   for (int i = 0; i < p; ++i){
     double t1 = t1vec[i];
     double t2 = ld * w[i];

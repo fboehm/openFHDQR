@@ -25,7 +25,6 @@ Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile re
 }
 \seealso{
 Other proximal ADMM for weighted L1 penalized quantile regression: 
-\code{\link{update_beta_padmmR}()},
 \code{\link{update_beta_padmm}()},
 \code{\link{update_zR}()}
 }

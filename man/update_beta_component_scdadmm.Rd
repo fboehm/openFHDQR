@@ -4,10 +4,22 @@
 \alias{update_beta_component_scdadmm}
 \title{Update component of beta with coordinate descent}
 \usage{
-update_beta_component_scdadmm(beta, index, X, theta, sigma, y, z, lambda, w)
+update_beta_component_scdadmm(
+  beta,
+  index,
+  X,
+  theta,
+  sigma,
+  y,
+  z,
+  lambda1,
+  lambda2,
+  w,
+  nu
+)
 }
 \arguments{
-\item{beta}{current value of beta vector, ie, a scalar}
+\item{beta}{current value of beta vector}
 
 \item{index}{an integer from 1 to p, indicating the index of beta for the update}
 
@@ -21,9 +33,9 @@ update_beta_component_scdadmm(beta, index, X, theta, sigma, y, z, lambda, w)
 
 \item{z}{current value of the z vector}
 
-\item{lambda}{lambda constant}
-
 \item{w}{w vector}
+
+\item{lambda}{lambda constant}
 }
 \value{
 update of one component of beta

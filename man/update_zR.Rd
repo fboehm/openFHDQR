@@ -2,7 +2,7 @@
 % Please edit documentation in R/padmm.R
 \name{update_zR}
 \alias{update_zR}
-\title{Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression}
+\title{Update z for the proximal ADMM or scd ADMM for weighted elastic net-penalized quantile regression}
 \usage{
 update_zR(y, X, beta, theta, sigma, tau)
 }
@@ -23,11 +23,10 @@ update_zR(y, X, beta, theta, sigma, tau)
 updated z vector
 }
 \description{
-Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
+Update z for the proximal ADMM or scd ADMM for weighted elastic net-penalized quantile regression
 }
 \seealso{
 Other proximal ADMM for weighted L1 penalized quantile regression: 
-\code{\link{update_beta_padmmR}()},
 \code{\link{update_beta_padmm}()},
 \code{\link{update_z}()}
 }

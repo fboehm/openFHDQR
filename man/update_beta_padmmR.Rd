@@ -2,9 +2,21 @@
 % Please edit documentation in R/padmm.R
 \name{update_beta_padmmR}
 \alias{update_beta_padmmR}
-\title{Update beta for the proximal ADMM for weighted L1-penalized quantile regression}
+\title{Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression}
 \usage{
-update_beta_padmmR(beta, X, theta, sigma, eta, y, z, lambda, w)
+update_beta_padmmR(
+  beta,
+  X,
+  theta,
+  sigma,
+  eta,
+  y,
+  z,
+  lambda1,
+  lambda2 = 0,
+  w,
+  nu = rep(1, length(beta))
+)
 }
 \arguments{
 \item{beta}{current state of the beta parameter vector}
@@ -21,20 +33,18 @@ update_beta_padmmR(beta, X, theta, sigma, eta, y, z, lambda, w)
 
 \item{z}{current state of z vector}
 
-\item{lambda}{lambda penalty parameter}
+\item{lambda1}{lambda1 penalty parameter}
 
-\item{w}{weights vector}
+\item{lambda2}{lambda2 penalty parameter}
+
+\item{w}{weights vector with lambda1}
+
+\item{nu}{weights vector with lambda2}
 }
 \value{
 updated beta vector
 }
 \description{
-Update beta for the proximal ADMM for weighted L1-penalized quantile regression
+Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression
 }
-\seealso{
-Other proximal ADMM for weighted L1 penalized quantile regression: 
-\code{\link{update_beta_padmm}()},
-\code{\link{update_zR}()},
-\code{\link{update_z}()}
-}
-\concept{proximal ADMM for weighted L1 penalized quantile regression}
+\concept{proximal ADMM for weighted elastic net penalized quantile regression}

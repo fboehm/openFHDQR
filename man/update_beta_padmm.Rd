@@ -33,7 +33,6 @@ Update beta for the proximal ADMM for weighted L1-penalized quantile regression
 }
 \seealso{
 Other proximal ADMM for weighted L1 penalized quantile regression: 
-\code{\link{update_beta_padmmR}()},
 \code{\link{update_zR}()},
 \code{\link{update_z}()}
 }

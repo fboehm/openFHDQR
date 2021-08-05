@@ -2,7 +2,7 @@
 % Please edit documentation in R/padmm.R
 \name{update_thetaR}
 \alias{update_thetaR}
-\title{Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression}
+\title{Update theta for the proximal ADMM or scd ADMM for weighted elastic net-penalized quantile regression}
 \usage{
 update_thetaR(theta, gamma, sigma, X, beta, z, y)
 }
@@ -25,5 +25,5 @@ update_thetaR(theta, gamma, sigma, X, beta, z, y)
 updated theta vector
 }
 \description{
-Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
+Update theta for the proximal ADMM or scd ADMM for weighted elastic net-penalized quantile regression
 }
