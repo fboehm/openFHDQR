@@ -9,7 +9,7 @@
 #' @param zi ith component of current value of z vector
 #' @return a 1-vector for use in updating a component of beta
 
-calc_chii <- function(beta, j, Xrow, thetai, sigma, yi, zi){
+calc_chiiR <- function(beta, j, Xrow, thetai, sigma, yi, zi){
   return(thetai + sigma * (yi - zi - as.numeric(Xrow[- j] %*% beta[- j])))
 }
 
@@ -27,11 +27,11 @@ calc_chii <- function(beta, j, Xrow, thetai, sigma, yi, zi){
 #' @return update of one component of beta
 #' @export
 
-update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, lambda1, lambda2, w, nu){
+update_beta_component_scdadmmR <- function(beta, index, X, theta, sigma, y, z, lambda1, lambda2, w, nu){
   xj <- X[, index] # jth column of X matrix
   chi <- numeric()
   for (i in seq_along(theta)){
-    chi[i] <- calc_chii(beta = beta, j = index, Xrow = X[i, ], thetai = theta[i], sigma = sigma, yi = y[i], zi = z[i])
+    chi[i] <- calc_chiiR(beta = beta, j = index, Xrow = X[i, ], thetai = theta[i], sigma = sigma, yi = y[i], zi = z[i])
   }
   arg1 <- as.numeric(xj %*% chi)
   arg2 <- lambda1 * w[index]
@@ -51,9 +51,9 @@ update_beta_component_scdadmm <- function(beta, index, X, theta, sigma, y, z, la
 #' @return update of entirety of beta via scdadmm
 #' @export
 
-update_beta_scdadmm <- function(beta, X, theta, sigma, y, z, lambda, w){
+update_beta_scdadmmR <- function(beta, X, theta, sigma, y, z, lambda, w){
   for (j in seq_along(beta)){
-    beta[j] <- update_beta_component_scdadmm(beta = beta,
+    beta[j] <- update_beta_component_scdadmmR(beta = beta,
                                                  index = j,
                                                  X = X,
                                                  theta = theta,
@@ -113,7 +113,7 @@ scdadmmR <- function(beta0 = rep(1, ncol(X)),
     ## Step 2.1
     iter2 <- 0
     while(iter2 < max_iter & max(abs(beta - old_beta) > epsilon3)){
-      new_beta <- update_beta_scdadmm(beta = beta,
+      new_beta <- update_beta_scdadmmR(beta = beta,
                           X = X,
                           theta = theta,
                           sigma = sigma,
@@ -130,7 +130,7 @@ scdadmmR <- function(beta0 = rep(1, ncol(X)),
       }
     }
     ## step 2.2
-    new_z <- update_z(y = y,
+    new_z <- update_zR(y = y,
                       X = X,
                       beta = beta,
                       theta = theta,
@@ -139,7 +139,7 @@ scdadmmR <- function(beta0 = rep(1, ncol(X)),
     old_z <- z
     z <- new_z
     ## step 2.3
-    new_theta <- update_theta(theta = theta,
+    new_theta <- update_thetaR(theta = theta,
                               gamma = gamma,
                               sigma = sigma,
                               X = X,
