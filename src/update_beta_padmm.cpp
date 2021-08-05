@@ -40,7 +40,7 @@ Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta,
   double denom = sigma * eta;
   Rcpp::NumericVector arg2 = (theta + sigma * y - sigma * X * beta - sigma * z) / denom;
   double ld = lambda / denom;
-  Rcpp::NumericVector t1vec = beta + X * arg2; //check this!
+  Rcpp::NumericVector t1vec = beta + X * arg2; //check this! Need transpose of X!
   for (int i = 0; i < p; ++i){
     double t1 = t1vec[i];
     double t2 = ld * w[i];
