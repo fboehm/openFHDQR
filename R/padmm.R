@@ -1,4 +1,4 @@
-#' Update beta for the proximal ADMM for weighted L1-penalized quantile regression
+#' Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression
 #'
 #' @param beta current state of the beta parameter vector
 #' @param X design matrix
@@ -15,18 +15,19 @@
 #' @family proximal ADMM for weighted elastic net penalized quantile regression
 #' @export
 
-update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda1, lambda2 = 0, w, nu){
+update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda1, lambda2 = 0, w, nu = rep(1, length(beta))){
   new_beta <- beta
-  denom <- sigma * eta
-  for (i in seq_along(beta)){
-    t1 <- beta[i] + X[, i] %*% (theta + sigma * y - sigma * X %*% beta - sigma * z) / denom
-    t2 <- lambda * w[i] / denom
-    new_beta[i] <- shrink(t1, t2)
+  denom <- sigma * eta + lambda2 * nu
+  arg1 <- theta + sigma * y - sigma * X %*% beta - sigma * z
+  for (j in seq_along(beta)){
+    t1 <- sigma * eta * beta[j] + X[, j] %*% arg1
+    t2 <- lambda1 * w[j]
+    new_beta[i] <- shrink(t1, t2) / denom[j]
   }
   return(new_beta)
 }
 
-#' Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
+#' Update z for the proximal ADMM or scd ADMM for weighted elastic net-penalized quantile regression
 #'
 #' @param y y vector
 #' @param X design matrix
@@ -40,15 +41,16 @@ update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda1, lambda
 
 update_zR <- function(y, X, beta, theta, sigma, tau){
   new_z <- numeric()
+  alpha <- length(y) * sigma
   for (i in seq_along(y)){
     new_z[i] <- prox(xi = y[i] - X[i, ] %*% beta + theta[i] / sigma,
-                     alpha = length(y) * sigma,
+                     alpha = alpha,
                      tau = tau)
   }
   return(new_z)
 }
 
-#' Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
+#' Update theta for the proximal ADMM or scd ADMM for weighted elastic net-penalized quantile regression
 #'
 #' @param theta current state of theta (k)
 #' @param gamma gamma constant
@@ -73,8 +75,10 @@ update_thetaR <- function(theta, gamma, sigma, X, beta, z, y){
 #' @param X design matrix
 #' @param eta eta constant
 #' @param y y vector
-#' @param lambda L1 penalty constant
-#' @param w weights vector
+#' @param lambda1 L1 penalty parameter
+#' @param lambda2 L2 penalty parameter
+#' @param w weights vector for lambda1 penalty
+#' @param nu weights vector for lambda2 penalty
 #' @param tau quantile, a number between 0 and 1
 #' @param gamma gamma constant, affects the step length in the theta update step
 #' @param maxiter maximum number of iterations
@@ -83,15 +87,17 @@ update_thetaR <- function(theta, gamma, sigma, X, beta, z, y){
 #' @return beta, the vector of coefficient estimates
 #' @export
 
-padmm_L1R <- function(beta0 = rep(0, ncol(X)),
+padmmR <- function(beta0 = rep(0, ncol(X)),
                         z0 = y - X %*% beta0,
                         theta0 = rep(1, nrow(X)),
                         sigma = 0.05,
                         X,
                         eta = eigen(t(X) %*% X)$values[1],
                         y,
-                        lambda = 1,
+                        lambda1 = 1,
+                   lambda2 = 0,
                         w = rep(1, length(beta0)),
+                   nu = rep(1, length(beta0)),
                         tau = 0.5,
                         gamma = 0.1,
                         max_iter = 10 ^ 5,
@@ -107,19 +113,21 @@ padmm_L1R <- function(beta0 = rep(0, ncol(X)),
   crit1 <- FALSE; crit2 <- FALSE
   while(iter < max_iter & (!crit1 | !crit2)){
     ## Step 2.1
-    new_beta <- update_beta_padmm(beta = beta,
+    new_beta <- update_beta_padmmR(beta = beta,
                                   X = X,
                                   theta = theta,
                                   sigma = sigma,
                                   eta = eta,
                                   y = y,
                                   z = z,
-                                  lambda = lambda,
-                                  w = w)
+                                  lambda1 = lambda1,
+                                  lambda2 = lambda2,
+                                  w = w,
+                                  nu = nu)
     old_beta <- beta
     beta <- new_beta
     ## step 2.2
-    new_z <- update_z(y = y,
+    new_z <- update_zR(y = y,
                             X = X,
                             beta = beta,
                             theta = theta,
@@ -128,7 +136,7 @@ padmm_L1R <- function(beta0 = rep(0, ncol(X)),
     old_z <- z
     z <- new_z
     ## step 2.3
-    new_theta <- update_theta(theta = theta,
+    new_theta <- update_thetaR(theta = theta,
                                     gamma = gamma,
                                     sigma = sigma,
                                     X = X,
