@@ -22,20 +22,22 @@ calc_chiiR <- function(beta, j, Xrow, thetai, sigma, yi, zi){
 #' @param sigma sigma constant
 #' @param y y vector
 #' @param z current value of the z vector
-#' @param lambda lambda constant
-#' @param w w vector
+#' @param l1 lambda1 L1 penalty parameter
+#' @param l2 lambda2 L2 penalty parameter
+#' @param w weights vector for lambda1
+#' @param nu weights vector for lambda2
 #' @return update of one component of beta
 #' @export
 
-update_beta_component_scdadmmR <- function(beta, index, X, theta, sigma, y, z, lambda1, lambda2, w, nu){
+update_beta_component_scdadmmR <- function(beta, index, X, theta, sigma, y, z, l1, l2, w, nu){
   xj <- X[, index] # jth column of X matrix
   chi <- numeric()
   for (i in seq_along(theta)){
     chi[i] <- calc_chiiR(beta = beta, j = index, Xrow = X[i, ], thetai = theta[i], sigma = sigma, yi = y[i], zi = z[i])
   }
   arg1 <- as.numeric(xj %*% chi)
-  arg2 <- lambda1 * w[index]
-  return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2 + lambda2 * nu[index]))
+  arg2 <- l1 * w[index]
+  return(shrink(arg1, arg2) / (sigma * norm_vec(xj) ^ 2 + l2 * nu[index]))
 }
 
 #' One update of beta with scd
@@ -46,12 +48,14 @@ update_beta_component_scdadmmR <- function(beta, index, X, theta, sigma, y, z, l
 #' @param sigma sigma constant
 #' @param y y vector
 #' @param z current value of the z vector
-#' @param lambda lambda constant
-#' @param w w vector
+#' @param l1 lambda1 parameter
+#' @param l2 lambda2 parameter
+#' @param w weights vector for lambda1
+#' @param nu weights vector for lambda2
 #' @return update of entirety of beta via scdadmm
 #' @export
 
-update_beta_scdadmmR <- function(beta, X, theta, sigma, y, z, lambda, w){
+update_beta_scdadmmR <- function(beta, X, theta, sigma, y, z, l1, l2, w, nu){
   for (j in seq_along(beta)){
     beta[j] <- update_beta_component_scdadmmR(beta = beta,
                                                  index = j,
@@ -60,8 +64,9 @@ update_beta_scdadmmR <- function(beta, X, theta, sigma, y, z, lambda, w){
                                                  sigma = sigma,
                                                  y = y,
                                                  z = z,
-                                                 lambda = lambda,
-                                                 w = w)
+                                                 l1 = l1,
+                                              l2 = l2,
+                                                 w = w, nu = nu)
   }
   return(beta)
 }
@@ -75,8 +80,10 @@ update_beta_scdadmmR <- function(beta, X, theta, sigma, y, z, lambda, w){
 #' @param X design matrix
 #' @param eta eta constant
 #' @param y y vector
-#' @param lambda L1 penalty constant
-#' @param w weights vector
+#' @param l1 L1 penalty parameter
+#' @param l2 L2 penalty parameter
+#' @param w L1 weights vector
+#' @param nu L2 weights vector
 #' @param tau quantile, a number between 0 and 1
 #' @param gamma gamma constant, affects the step length in the theta update step
 #' @param maxiter maximum number of iterations
@@ -93,8 +100,10 @@ scdadmmR <- function(beta0 = rep(1, ncol(X)),
                         X,
                         eta = eigen(t(X) %*% X)$values[1],
                         y,
-                        lambda = 0.1,
+                        l1 = 1,
+                     l2 = 0,
                         w = rep(1, length(beta0)),
+                     nu = rep(1, length(beta0)),
                         tau = 0.5,
                         gamma = 1, # gamma is absent (ie, equal to 1) in scd admm
                         max_iter = 10 ^ 5,
@@ -119,15 +128,13 @@ scdadmmR <- function(beta0 = rep(1, ncol(X)),
                           sigma = sigma,
                           y = y,
                           z = z,
-                          lambda = lambda,
-                          w = w)
+                          l1 = l1,
+                          l2 = l2,
+                          w = w,
+                          nu = nu)
       old_beta <- beta
       beta <- new_beta
       iter2 <- iter2 + 1
-      if (iter2 %% 10 == 0) {
-        print(iter2)
-        print(beta)
-      }
     }
     ## step 2.2
     new_z <- update_zR(y = y,

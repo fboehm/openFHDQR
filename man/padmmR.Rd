@@ -12,8 +12,8 @@ padmmR(
   X,
   eta = eigen(t(X) \%*\% X)$values[1],
   y,
-  lambda1 = 1,
-  lambda2 = 0,
+  l1 = 1,
+  l2 = 0,
   w = rep(1, length(beta0)),
   nu = rep(1, length(beta0)),
   tau = 0.5,
@@ -38,9 +38,9 @@ padmmR(
 
 \item{y}{y vector}
 
-\item{lambda1}{L1 penalty parameter}
+\item{l1}{L1 penalty parameter}
 
-\item{lambda2}{L2 penalty parameter}
+\item{l2}{L2 penalty parameter}
 
 \item{w}{weights vector for lambda1 penalty}
 

@@ -1,10 +1,9 @@
-#include <Rcpp.h>
-#include <RcppEigen.h>
+#include <RcppArmadillo.h>
 
-// [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::depends(RcppArmadillo)]]
 
 using namespace Rcpp;
-using namespace RcppEigen;
+
 
 // This is a simple example of exporting a C++ function to R. You can
 // source this function into an R session using the Rcpp::sourceCpp
@@ -31,22 +30,15 @@ using namespace RcppEigen;
 
 // [[Rcpp::export]]
 
-Eigen::VectorXd update_theta(Eigen::VectorXd theta,
+arma::vec update_theta(arma::vec theta,
                              double gamma,
                              double sigma,
-                             Eigen::MatrixXd X,
-                             Eigen::VectorXd beta,
-                             Eigen::VectorXd z,
-                             Eigen::VectorXd y){
-  Eigen::VectorXd out = theta - gamma * sigma * (X * beta + z - y);
+                             arma::mat X,
+                             arma::vec beta,
+                             arma::vec z,
+                             arma::vec y){
+  arma::vec out = theta - gamma * sigma * (X * beta + z - y);
   return out;
 }
 
 
-// You can include R code blocks in C++ files processed with sourceCpp
-// (useful for testing and development). The R code will be automatically
-// run after the compilation.
-//
-
-/*** R
-*/

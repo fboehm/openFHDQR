@@ -4,7 +4,7 @@
 \alias{update_beta_scdadmmR}
 \title{One update of beta with scd}
 \usage{
-update_beta_scdadmmR(beta, X, theta, sigma, y, z, lambda, w)
+update_beta_scdadmmR(beta, X, theta, sigma, y, z, l1, l2, w, nu)
 }
 \arguments{
 \item{beta}{current value of beta vector}
@@ -19,9 +19,13 @@ update_beta_scdadmmR(beta, X, theta, sigma, y, z, lambda, w)
 
 \item{z}{current value of the z vector}
 
-\item{lambda}{lambda constant}
+\item{l1}{lambda1 parameter}
 
-\item{w}{w vector}
+\item{l2}{lambda2 parameter}
+
+\item{w}{weights vector for lambda1}
+
+\item{nu}{weights vector for lambda2}
 }
 \value{
 update of entirety of beta via scdadmm

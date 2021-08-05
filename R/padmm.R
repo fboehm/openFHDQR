@@ -7,21 +7,21 @@
 #' @param eta eta constant, numeric vector of length 1
 #' @param y outcome vector
 #' @param z current state of z vector
-#' @param lambda1 lambda1 penalty parameter
-#' @param lambda2 lambda2 penalty parameter
+#' @param l1 lambda1 penalty parameter
+#' @param l2 lambda2 penalty parameter
 #' @param w weights vector with lambda1
 #' @param nu weights vector with lambda2
 #' @return updated beta vector
 #' @family proximal ADMM for weighted elastic net penalized quantile regression
 #' @export
 
-update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda1, lambda2 = 0, w, nu = rep(1, length(beta))){
+update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, l1, l2 = 0, w, nu = rep(1, length(beta))){
   new_beta <- beta
-  denom <- sigma * eta + lambda2 * nu # denom is a p-vector, since nu is a p-vector
+  denom <- sigma * eta + l2 * nu # denom is a p-vector, since nu is a p-vector
   arg1 <- theta + sigma * y - sigma * X %*% beta - sigma * z #arg1 is a n-vector
   for (j in seq_along(beta)){
     t1 <- sigma * eta * beta[j] + X[, j] %*% arg1
-    t2 <- lambda1 * w[j]
+    t2 <- l1 * w[j]
     new_beta[j] <- shrink(t1, t2) / denom[j]
   }
   return(new_beta)
@@ -75,8 +75,8 @@ update_thetaR <- function(theta, gamma, sigma, X, beta, z, y){
 #' @param X design matrix
 #' @param eta eta constant
 #' @param y y vector
-#' @param lambda1 L1 penalty parameter
-#' @param lambda2 L2 penalty parameter
+#' @param l1 L1 penalty parameter
+#' @param l2 L2 penalty parameter
 #' @param w weights vector for lambda1 penalty
 #' @param nu weights vector for lambda2 penalty
 #' @param tau quantile, a number between 0 and 1
@@ -94,8 +94,8 @@ padmmR <- function(beta0 = rep(0, ncol(X)),
                         X,
                         eta = eigen(t(X) %*% X)$values[1],
                         y,
-                        lambda1 = 1,
-                   lambda2 = 0,
+                        l1 = 1,
+                   l2 = 0,
                         w = rep(1, length(beta0)),
                    nu = rep(1, length(beta0)),
                         tau = 0.5,
@@ -120,8 +120,8 @@ padmmR <- function(beta0 = rep(0, ncol(X)),
                                   eta = eta,
                                   y = y,
                                   z = z,
-                                  lambda1 = lambda1,
-                                  lambda2 = lambda2,
+                                  l1 = l1,
+                                  l2 = l2,
                                   w = w,
                                   nu = nu)
     old_beta <- beta
@@ -160,7 +160,6 @@ padmmR <- function(beta0 = rep(0, ncol(X)),
                               epsilon2 = epsilon2,
                               theta = theta)
     iter <- iter + 1
-    print(beta)
   }
   return(list(beta = beta, z = z, theta = theta))
 }
@@ -205,6 +204,6 @@ check_criterion2 <- function(sigma, X, z, old_z, epsilon1, epsilon2, theta){
 #' @return a numeric vector of length one, the l2 norm of x
 #' @export
 #' @references https://stackoverflow.com/questions/10933945/how-to-calculate-the-euclidean-norm-of-a-vector-in-r
-#'
+
 
 norm_vec <- function(x) sqrt(sum(x^2))

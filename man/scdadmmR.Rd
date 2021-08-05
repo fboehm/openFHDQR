@@ -12,8 +12,10 @@ scdadmmR(
   X,
   eta = eigen(t(X) \%*\% X)$values[1],
   y,
-  lambda = 0.1,
+  l1 = 1,
+  l2 = 0,
   w = rep(1, length(beta0)),
+  nu = rep(1, length(beta0)),
   tau = 0.5,
   gamma = 1,
   max_iter = 10^5,
@@ -37,9 +39,13 @@ scdadmmR(
 
 \item{y}{y vector}
 
-\item{lambda}{L1 penalty constant}
+\item{l1}{L1 penalty parameter}
 
-\item{w}{weights vector}
+\item{l2}{L2 penalty parameter}
+
+\item{w}{L1 weights vector}
+
+\item{nu}{L2 weights vector}
 
 \item{tau}{quantile, a number between 0 and 1}
 

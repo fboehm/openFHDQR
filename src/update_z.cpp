@@ -1,17 +1,14 @@
-#include <Rcpp.h>
 #include <cmath>        // std::abs
 #include<algorithm>
 #include<iostream>
 #include <vector>
-#include <RcppEigen.h>
+#include <RcppArmadillo.h>
 #include "shrink.h"
 
 
-// [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::interfaces(r, cpp)]]
 
-using namespace Rcpp;
-using namespace RcppEigen;
 
 //' Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 //'
@@ -24,14 +21,15 @@ using namespace RcppEigen;
 //' @family proximal ADMM for weighted L1 penalized quantile regression
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericVector update_z(Rcpp::NumericVector y,
-                             Rcpp::NumericVector Xbeta,
-                             Rcpp::NumericVector theta,
+arma::vec update_z(arma::vec y,
+                             arma::vec Xbeta,
+                             arma::vec theta,
                          double sigma,
                          double tau){
-  const int n = y.size();
-  Rcpp::NumericVector new_z(n);
-  Rcpp::NumericVector arg1 = y - Xbeta + theta / sigma;
+  const int n = y.n_elem;
+  arma::vec new_z;
+  new_z.zeros(n);
+  arma::vec arg1 = y - Xbeta + theta / sigma;
   for(int i = 0; i < n; ++i){
     new_z[i] = prox(arg1[i], sigma * n, tau);
   }

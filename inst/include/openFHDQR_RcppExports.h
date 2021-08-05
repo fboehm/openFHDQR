@@ -4,7 +4,7 @@
 #ifndef RCPP_openFHDQR_RCPPEXPORTS_H_GEN_
 #define RCPP_openFHDQR_RCPPEXPORTS_H_GEN_
 
-#include <RcppEigen.h>
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
 
 namespace openFHDQR {
@@ -67,11 +67,11 @@ namespace openFHDQR {
         return Rcpp::as<double >(rcpp_result_gen);
     }
 
-    inline Eigen::VectorXd update_theta(Eigen::VectorXd theta, double gamma, double sigma, Eigen::MatrixXd X, Eigen::VectorXd beta, Eigen::VectorXd z, Eigen::VectorXd y) {
+    inline arma::vec update_theta(arma::vec theta, double gamma, double sigma, arma::mat X, arma::vec beta, arma::vec z, arma::vec y) {
         typedef SEXP(*Ptr_update_theta)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
         static Ptr_update_theta p_update_theta = NULL;
         if (p_update_theta == NULL) {
-            validateSignature("Eigen::VectorXd(*update_theta)(Eigen::VectorXd,double,double,Eigen::MatrixXd,Eigen::VectorXd,Eigen::VectorXd,Eigen::VectorXd)");
+            validateSignature("arma::vec(*update_theta)(arma::vec,double,double,arma::mat,arma::vec,arma::vec,arma::vec)");
             p_update_theta = (Ptr_update_theta)R_GetCCallable("openFHDQR", "_openFHDQR_update_theta");
         }
         RObject rcpp_result_gen;
@@ -85,14 +85,14 @@ namespace openFHDQR {
             throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
             throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
-        return Rcpp::as<Eigen::VectorXd >(rcpp_result_gen);
+        return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
-    inline Rcpp::NumericVector update_z(Rcpp::NumericVector y, Rcpp::NumericVector Xbeta, Rcpp::NumericVector theta, double sigma, double tau) {
+    inline arma::vec update_z(arma::vec y, arma::vec Xbeta, arma::vec theta, double sigma, double tau) {
         typedef SEXP(*Ptr_update_z)(SEXP,SEXP,SEXP,SEXP,SEXP);
         static Ptr_update_z p_update_z = NULL;
         if (p_update_z == NULL) {
-            validateSignature("Rcpp::NumericVector(*update_z)(Rcpp::NumericVector,Rcpp::NumericVector,Rcpp::NumericVector,double,double)");
+            validateSignature("arma::vec(*update_z)(arma::vec,arma::vec,arma::vec,double,double)");
             p_update_z = (Ptr_update_z)R_GetCCallable("openFHDQR", "_openFHDQR_update_z");
         }
         RObject rcpp_result_gen;
@@ -106,7 +106,7 @@ namespace openFHDQR {
             throw Rcpp::LongjumpException(rcpp_result_gen);
         if (rcpp_result_gen.inherits("try-error"))
             throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
-        return Rcpp::as<Rcpp::NumericVector >(rcpp_result_gen);
+        return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
 }

@@ -4,7 +4,7 @@
 \alias{update_beta_padmm}
 \title{Update beta for the proximal ADMM for weighted L1-penalized quantile regression}
 \usage{
-update_beta_padmm(beta, X, theta, sigma, eta, y, z, lambda, w)
+update_beta_padmm(beta, X, theta, sigma, eta, y, z, l1, l2, w, nu)
 }
 \arguments{
 \item{beta}{current state of the beta parameter vector}
@@ -21,9 +21,13 @@ update_beta_padmm(beta, X, theta, sigma, eta, y, z, lambda, w)
 
 \item{z}{current state of z vector}
 
-\item{lambda}{lambda penalty parameter}
+\item{l1}{lambda1 penalty parameter}
 
-\item{w}{weights vector}
+\item{l2}{lambda2 penalty parameter}
+
+\item{w}{weights vector for L1 penalty}
+
+\item{nu}{weights vector for L2 penalty}
 }
 \value{
 updated beta vector

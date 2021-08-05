@@ -20,6 +20,18 @@ prox <- function(xi, alpha, tau) {
     .Call(`_openFHDQR_prox`, xi, alpha, tau)
 }
 
+choose_col <- function(x, idx) {
+    .Call(`_openFHDQR_choose_col`, x, idx)
+}
+
+choose_row <- function(x, idx) {
+    .Call(`_openFHDQR_choose_row`, x, idx)
+}
+
+choose_element <- function(x, ridx, cidx) {
+    .Call(`_openFHDQR_choose_element`, x, ridx, cidx)
+}
+
 #' Update beta for the proximal ADMM for weighted L1-penalized quantile regression
 #'
 #' @param beta current state of the beta parameter vector
@@ -29,13 +41,15 @@ prox <- function(xi, alpha, tau) {
 #' @param eta eta constant, numeric vector of length 1
 #' @param y outcome vector
 #' @param z current state of z vector
-#' @param lambda lambda penalty parameter
-#' @param w weights vector
+#' @param l1 lambda1 penalty parameter
+#' @param l2 lambda2 penalty parameter
+#' @param w weights vector for L1 penalty
+#' @param nu weights vector for L2 penalty
 #' @return updated beta vector
 #' @family proximal ADMM for weighted L1 penalized quantile regression
 #' @export
-update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, lambda, w) {
-    .Call(`_openFHDQR_update_beta_padmm`, beta, X, theta, sigma, eta, y, z, lambda, w)
+update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, l1, l2, w, nu) {
+    .Call(`_openFHDQR_update_beta_padmm`, beta, X, theta, sigma, eta, y, z, l1, l2, w, nu)
 }
 
 #' Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression

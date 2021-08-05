@@ -2,7 +2,7 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include "../inst/include/openFHDQR.h"
-#include <RcppEigen.h>
+#include <RcppArmadillo.h>
 #include <Rcpp.h>
 #include <string>
 #include <set>
@@ -85,37 +85,76 @@ RcppExport SEXP _openFHDQR_prox(SEXP xiSEXP, SEXP alphaSEXP, SEXP tauSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
-// update_beta_padmm
-Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta, Rcpp::NumericMatrix X, Rcpp::NumericVector theta, double sigma, double eta, Rcpp::NumericVector y, Rcpp::NumericVector z, double lambda, Rcpp::NumericVector w);
-RcppExport SEXP _openFHDQR_update_beta_padmm(SEXP betaSEXP, SEXP XSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP zSEXP, SEXP lambdaSEXP, SEXP wSEXP) {
+// choose_col
+arma::mat choose_col(arma::mat x, int idx);
+RcppExport SEXP _openFHDQR_choose_col(SEXP xSEXP, SEXP idxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type idx(idxSEXP);
+    rcpp_result_gen = Rcpp::wrap(choose_col(x, idx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// choose_row
+arma::mat choose_row(arma::mat x, int idx);
+RcppExport SEXP _openFHDQR_choose_row(SEXP xSEXP, SEXP idxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type idx(idxSEXP);
+    rcpp_result_gen = Rcpp::wrap(choose_row(x, idx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// choose_element
+arma::mat choose_element(arma::mat x, int ridx, int cidx);
+RcppExport SEXP _openFHDQR_choose_element(SEXP xSEXP, SEXP ridxSEXP, SEXP cidxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type ridx(ridxSEXP);
+    Rcpp::traits::input_parameter< int >::type cidx(cidxSEXP);
+    rcpp_result_gen = Rcpp::wrap(choose_element(x, ridx, cidx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// update_beta_padmm
+arma::vec update_beta_padmm(arma::vec beta, arma::mat X, arma::vec theta, double sigma, double eta, arma::vec y, arma::vec z, double l1, double l2, arma::vec w, arma::vec nu);
+RcppExport SEXP _openFHDQR_update_beta_padmm(SEXP betaSEXP, SEXP XSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP zSEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP wSEXP, SEXP nuSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type z(zSEXP);
-    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type w(wSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_beta_padmm(beta, X, theta, sigma, eta, y, z, lambda, w));
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type z(zSEXP);
+    Rcpp::traits::input_parameter< double >::type l1(l1SEXP);
+    Rcpp::traits::input_parameter< double >::type l2(l2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type w(wSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type nu(nuSEXP);
+    rcpp_result_gen = Rcpp::wrap(update_beta_padmm(beta, X, theta, sigma, eta, y, z, l1, l2, w, nu));
     return rcpp_result_gen;
 END_RCPP
 }
 // update_theta
-Eigen::VectorXd update_theta(Eigen::VectorXd theta, double gamma, double sigma, Eigen::MatrixXd X, Eigen::VectorXd beta, Eigen::VectorXd z, Eigen::VectorXd y);
+arma::vec update_theta(arma::vec theta, double gamma, double sigma, arma::mat X, arma::vec beta, arma::vec z, arma::vec y);
 static SEXP _openFHDQR_update_theta_try(SEXP thetaSEXP, SEXP gammaSEXP, SEXP sigmaSEXP, SEXP XSEXP, SEXP betaSEXP, SEXP zSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
-    Rcpp::traits::input_parameter< Eigen::MatrixXd >::type X(XSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type z(zSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd >::type y(ySEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
     rcpp_result_gen = Rcpp::wrap(update_theta(theta, gamma, sigma, X, beta, z, y));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
@@ -145,13 +184,13 @@ RcppExport SEXP _openFHDQR_update_theta(SEXP thetaSEXP, SEXP gammaSEXP, SEXP sig
     return rcpp_result_gen;
 }
 // update_z
-Rcpp::NumericVector update_z(Rcpp::NumericVector y, Rcpp::NumericVector Xbeta, Rcpp::NumericVector theta, double sigma, double tau);
+arma::vec update_z(arma::vec y, arma::vec Xbeta, arma::vec theta, double sigma, double tau);
 static SEXP _openFHDQR_update_z_try(SEXP ySEXP, SEXP XbetaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type Xbeta(XbetaSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Xbeta(XbetaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
     rcpp_result_gen = Rcpp::wrap(update_z(y, Xbeta, theta, sigma, tau));
@@ -189,8 +228,8 @@ static int _openFHDQR_RcppExport_validate(const char* sig) {
     if (signatures.empty()) {
         signatures.insert("double(*shrink)(double,double)");
         signatures.insert("double(*prox)(double,double,double)");
-        signatures.insert("Eigen::VectorXd(*update_theta)(Eigen::VectorXd,double,double,Eigen::MatrixXd,Eigen::VectorXd,Eigen::VectorXd,Eigen::VectorXd)");
-        signatures.insert("Rcpp::NumericVector(*update_z)(Rcpp::NumericVector,Rcpp::NumericVector,Rcpp::NumericVector,double,double)");
+        signatures.insert("arma::vec(*update_theta)(arma::vec,double,double,arma::mat,arma::vec,arma::vec,arma::vec)");
+        signatures.insert("arma::vec(*update_z)(arma::vec,arma::vec,arma::vec,double,double)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -208,7 +247,10 @@ RcppExport SEXP _openFHDQR_RcppExport_registerCCallable() {
 static const R_CallMethodDef CallEntries[] = {
     {"_openFHDQR_shrink", (DL_FUNC) &_openFHDQR_shrink, 2},
     {"_openFHDQR_prox", (DL_FUNC) &_openFHDQR_prox, 3},
-    {"_openFHDQR_update_beta_padmm", (DL_FUNC) &_openFHDQR_update_beta_padmm, 9},
+    {"_openFHDQR_choose_col", (DL_FUNC) &_openFHDQR_choose_col, 2},
+    {"_openFHDQR_choose_row", (DL_FUNC) &_openFHDQR_choose_row, 2},
+    {"_openFHDQR_choose_element", (DL_FUNC) &_openFHDQR_choose_element, 3},
+    {"_openFHDQR_update_beta_padmm", (DL_FUNC) &_openFHDQR_update_beta_padmm, 11},
     {"_openFHDQR_update_theta", (DL_FUNC) &_openFHDQR_update_theta, 7},
     {"_openFHDQR_update_z", (DL_FUNC) &_openFHDQR_update_z, 5},
     {"_openFHDQR_RcppExport_registerCCallable", (DL_FUNC) &_openFHDQR_RcppExport_registerCCallable, 0},

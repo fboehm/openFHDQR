@@ -1,5 +1,8 @@
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 #include "shrink.h"
+#include "subset.h"
+//[[Rcpp::depends(RcppArmadillo)]]
+
 using namespace Rcpp;
 
 // This is a simple example of exporting a C++ function to R. You can
@@ -20,41 +23,37 @@ using namespace Rcpp;
 //' @param eta eta constant, numeric vector of length 1
 //' @param y outcome vector
 //' @param z current state of z vector
-//' @param lambda lambda penalty parameter
-//' @param w weights vector
+//' @param l1 lambda1 penalty parameter
+//' @param l2 lambda2 penalty parameter
+//' @param w weights vector for L1 penalty
+//' @param nu weights vector for L2 penalty
 //' @return updated beta vector
 //' @family proximal ADMM for weighted L1 penalized quantile regression
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericVector update_beta_padmm(Rcpp::NumericVector beta,
-                                      Rcpp::NumericMatrix X,
-                                      Rcpp::NumericVector theta,
+arma::vec update_beta_padmm(arma::vec beta,
+                                      arma::mat X,
+                                      arma::vec theta,
                                       double sigma,
                                       double eta,
-                                      Rcpp::NumericVector y,
-                                      Rcpp::NumericVector z,
-                                      double lambda,
-                                      Rcpp::NumericVector w){
-  int p = beta.size();
-  Rcpp::NumericVector new_beta(p);
-  double denom = sigma * eta;
-  Rcpp::NumericVector arg2 = (theta + sigma * y - sigma * X * beta - sigma * z) / denom;
-  double ld = lambda / denom;
-  Rcpp::NumericVector t1vec = beta + X * arg2; //check this! Need transpose of X!
-  for (int i = 0; i < p; ++i){
-    double t1 = t1vec[i];
-    double t2 = ld * w[i];
-    new_beta[i] <- shrink(t1, t2);
+                                      arma::vec y,
+                                      arma::vec z,
+                                      double l1,
+                                      double l2,
+                                      arma::vec w,
+                                      arma::vec nu){
+  const int p = beta.size();
+  arma::vec new_beta(p);
+  arma::vec denom = sigma * eta + l2 * nu;
+  arma::vec arg1 = (theta + sigma * y - sigma * X * beta - sigma * z) / denom;
+  for (int j = 0; j < p; ++j){
+    arma::mat Xcol = choose_col(X, j);
+    double t1 = sigma * eta * beta[j] + (Xcol * arg1).eval()(0,0);
+    double t2 = l1 * w[j];
+    new_beta[j] = shrink(t1, t2) / denom[j];
   }
   return new_beta;
 }
 
 
 
-// You can include R code blocks in C++ files processed with sourceCpp
-// (useful for testing and development). The R code will be automatically
-// run after the compilation.
-//
-
-/*** R
-*/

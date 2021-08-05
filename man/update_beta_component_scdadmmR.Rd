@@ -12,8 +12,8 @@ update_beta_component_scdadmmR(
   sigma,
   y,
   z,
-  lambda1,
-  lambda2,
+  l1,
+  l2,
   w,
   nu
 )
@@ -33,9 +33,13 @@ update_beta_component_scdadmmR(
 
 \item{z}{current value of the z vector}
 
-\item{w}{w vector}
+\item{l1}{lambda1 L1 penalty parameter}
 
-\item{lambda}{lambda constant}
+\item{l2}{lambda2 L2 penalty parameter}
+
+\item{w}{weights vector for lambda1}
+
+\item{nu}{weights vector for lambda2}
 }
 \value{
 update of one component of beta

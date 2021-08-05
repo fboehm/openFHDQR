@@ -12,8 +12,8 @@ update_beta_padmmR(
   eta,
   y,
   z,
-  lambda1,
-  lambda2 = 0,
+  l1,
+  l2 = 0,
   w,
   nu = rep(1, length(beta))
 )
@@ -33,9 +33,9 @@ update_beta_padmmR(
 
 \item{z}{current state of z vector}
 
-\item{lambda1}{lambda1 penalty parameter}
+\item{l1}{lambda1 penalty parameter}
 
-\item{lambda2}{lambda2 penalty parameter}
+\item{l2}{lambda2 penalty parameter}
 
 \item{w}{weights vector with lambda1}
 

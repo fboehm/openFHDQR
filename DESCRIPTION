@@ -13,7 +13,7 @@ LazyData: true
 RoxygenNote: 7.1.1
 LinkingTo: 
     Rcpp,
-    RcppEigen
+    RcppArmadillo
 Imports: 
     Rcpp
 Suggests: 
