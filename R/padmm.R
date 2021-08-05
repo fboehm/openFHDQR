@@ -17,12 +17,12 @@
 
 update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, lambda1, lambda2 = 0, w, nu = rep(1, length(beta))){
   new_beta <- beta
-  denom <- sigma * eta + lambda2 * nu
-  arg1 <- theta + sigma * y - sigma * X %*% beta - sigma * z
+  denom <- sigma * eta + lambda2 * nu # denom is a p-vector, since nu is a p-vector
+  arg1 <- theta + sigma * y - sigma * X %*% beta - sigma * z #arg1 is a n-vector
   for (j in seq_along(beta)){
     t1 <- sigma * eta * beta[j] + X[, j] %*% arg1
     t2 <- lambda1 * w[j]
-    new_beta[i] <- shrink(t1, t2) / denom[j]
+    new_beta[j] <- shrink(t1, t2) / denom[j]
   }
   return(new_beta)
 }
