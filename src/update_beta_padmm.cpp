@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 //
-//' Update beta for the proximal ADMM for weighted L1-penalized quantile regression
+//' Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression
 //'
 //' @param beta current state of the beta parameter vector
 //' @param X design matrix
