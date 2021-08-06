@@ -13,7 +13,8 @@
 //' Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 //'
 //' @param y y vector
-//' @param Xbeta matrix product of X and beta
+//' @param X design matrix
+//' @param beta beta vector
 //' @param theta current state of theta parameter vector (k)
 //' @param sigma sigma constant
 //' @param tau quantile, a number between 0 and 1
@@ -22,14 +23,15 @@
 //' @export
 // [[Rcpp::export]]
 arma::vec update_z(arma::vec y,
-                             arma::vec Xbeta,
+                             arma::mat X,
+                             arma::vec beta,
                              arma::vec theta,
                          double sigma,
                          double tau){
   const int n = y.n_elem;
   arma::vec new_z;
   new_z.zeros(n);
-  arma::vec arg1 = y - Xbeta + theta / sigma;
+  arma::vec arg1 = y - X * beta + theta / sigma;
   for(int i = 0; i < n; ++i){
     new_z[i] = prox(arg1[i], sigma * n, tau);
   }

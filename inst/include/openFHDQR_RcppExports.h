@@ -88,17 +88,17 @@ namespace openFHDQR {
         return Rcpp::as<arma::vec >(rcpp_result_gen);
     }
 
-    inline arma::vec update_z(arma::vec y, arma::vec Xbeta, arma::vec theta, double sigma, double tau) {
-        typedef SEXP(*Ptr_update_z)(SEXP,SEXP,SEXP,SEXP,SEXP);
+    inline arma::vec update_z(arma::vec y, arma::mat X, arma::vec beta, arma::vec theta, double sigma, double tau) {
+        typedef SEXP(*Ptr_update_z)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
         static Ptr_update_z p_update_z = NULL;
         if (p_update_z == NULL) {
-            validateSignature("arma::vec(*update_z)(arma::vec,arma::vec,arma::vec,double,double)");
+            validateSignature("arma::vec(*update_z)(arma::vec,arma::mat,arma::vec,arma::vec,double,double)");
             p_update_z = (Ptr_update_z)R_GetCCallable("openFHDQR", "_openFHDQR_update_z");
         }
         RObject rcpp_result_gen;
         {
             RNGScope RCPP_rngScope_gen;
-            rcpp_result_gen = p_update_z(Shield<SEXP>(Rcpp::wrap(y)), Shield<SEXP>(Rcpp::wrap(Xbeta)), Shield<SEXP>(Rcpp::wrap(theta)), Shield<SEXP>(Rcpp::wrap(sigma)), Shield<SEXP>(Rcpp::wrap(tau)));
+            rcpp_result_gen = p_update_z(Shield<SEXP>(Rcpp::wrap(y)), Shield<SEXP>(Rcpp::wrap(X)), Shield<SEXP>(Rcpp::wrap(beta)), Shield<SEXP>(Rcpp::wrap(theta)), Shield<SEXP>(Rcpp::wrap(sigma)), Shield<SEXP>(Rcpp::wrap(tau)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();

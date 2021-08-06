@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{update_beta_padmm}
 \alias{update_beta_padmm}
-\title{Update beta for the proximal ADMM for weighted L1-penalized quantile regression}
+\title{Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression}
 \usage{
 update_beta_padmm(beta, X, theta, sigma, eta, y, z, l1, l2, w, nu)
 }
@@ -33,7 +33,7 @@ update_beta_padmm(beta, X, theta, sigma, eta, y, z, l1, l2, w, nu)
 updated beta vector
 }
 \description{
-Update beta for the proximal ADMM for weighted L1-penalized quantile regression
+Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression
 }
 \seealso{
 Other proximal ADMM for weighted L1 penalized quantile regression: 

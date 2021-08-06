@@ -32,7 +32,7 @@ choose_element <- function(x, ridx, cidx) {
     .Call(`_openFHDQR_choose_element`, x, ridx, cidx)
 }
 
-#' Update beta for the proximal ADMM for weighted L1-penalized quantile regression
+#' Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression
 #'
 #' @param beta current state of the beta parameter vector
 #' @param X design matrix
@@ -72,15 +72,16 @@ update_theta <- function(theta, gamma, sigma, X, beta, z, y) {
 #' Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 #'
 #' @param y y vector
-#' @param Xbeta matrix product of X and beta
+#' @param X design matrix
+#' @param beta beta vector
 #' @param theta current state of theta parameter vector (k)
 #' @param sigma sigma constant
 #' @param tau quantile, a number between 0 and 1
 #' @return updated z vector
 #' @family proximal ADMM for weighted L1 penalized quantile regression
 #' @export
-update_z <- function(y, Xbeta, theta, sigma, tau) {
-    .Call(`_openFHDQR_update_z`, y, Xbeta, theta, sigma, tau)
+update_z <- function(y, X, beta, theta, sigma, tau) {
+    .Call(`_openFHDQR_update_z`, y, X, beta, theta, sigma, tau)
 }
 
 # Register entry points for exported C++ functions

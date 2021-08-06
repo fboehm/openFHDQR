@@ -2,7 +2,7 @@
 #define SHRINK
 
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 
 double shrink(double u, double alpha);
 

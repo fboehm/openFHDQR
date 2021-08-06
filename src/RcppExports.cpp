@@ -184,24 +184,25 @@ RcppExport SEXP _openFHDQR_update_theta(SEXP thetaSEXP, SEXP gammaSEXP, SEXP sig
     return rcpp_result_gen;
 }
 // update_z
-arma::vec update_z(arma::vec y, arma::vec Xbeta, arma::vec theta, double sigma, double tau);
-static SEXP _openFHDQR_update_z_try(SEXP ySEXP, SEXP XbetaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
+arma::vec update_z(arma::vec y, arma::mat X, arma::vec beta, arma::vec theta, double sigma, double tau);
+static SEXP _openFHDQR_update_z_try(SEXP ySEXP, SEXP XSEXP, SEXP betaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type Xbeta(XbetaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
     Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_z(y, Xbeta, theta, sigma, tau));
+    rcpp_result_gen = Rcpp::wrap(update_z(y, X, beta, theta, sigma, tau));
     return rcpp_result_gen;
 END_RCPP_RETURN_ERROR
 }
-RcppExport SEXP _openFHDQR_update_z(SEXP ySEXP, SEXP XbetaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
+RcppExport SEXP _openFHDQR_update_z(SEXP ySEXP, SEXP XSEXP, SEXP betaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
     SEXP rcpp_result_gen;
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
-        rcpp_result_gen = PROTECT(_openFHDQR_update_z_try(ySEXP, XbetaSEXP, thetaSEXP, sigmaSEXP, tauSEXP));
+        rcpp_result_gen = PROTECT(_openFHDQR_update_z_try(ySEXP, XSEXP, betaSEXP, thetaSEXP, sigmaSEXP, tauSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -229,7 +230,7 @@ static int _openFHDQR_RcppExport_validate(const char* sig) {
         signatures.insert("double(*shrink)(double,double)");
         signatures.insert("double(*prox)(double,double,double)");
         signatures.insert("arma::vec(*update_theta)(arma::vec,double,double,arma::mat,arma::vec,arma::vec,arma::vec)");
-        signatures.insert("arma::vec(*update_z)(arma::vec,arma::vec,arma::vec,double,double)");
+        signatures.insert("arma::vec(*update_z)(arma::vec,arma::mat,arma::vec,arma::vec,double,double)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -252,7 +253,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_openFHDQR_choose_element", (DL_FUNC) &_openFHDQR_choose_element, 3},
     {"_openFHDQR_update_beta_padmm", (DL_FUNC) &_openFHDQR_update_beta_padmm, 11},
     {"_openFHDQR_update_theta", (DL_FUNC) &_openFHDQR_update_theta, 7},
-    {"_openFHDQR_update_z", (DL_FUNC) &_openFHDQR_update_z, 5},
+    {"_openFHDQR_update_z", (DL_FUNC) &_openFHDQR_update_z, 6},
     {"_openFHDQR_RcppExport_registerCCallable", (DL_FUNC) &_openFHDQR_RcppExport_registerCCallable, 0},
     {NULL, NULL, 0}
 };

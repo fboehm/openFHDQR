@@ -1,8 +1,11 @@
-#include <RcppArmadillo.h>
-// [[Rcpp::depends(RcppArmadillo)]]
 #include "update_beta_padmm.h"
 #include "update_theta.h"
 #include "update_z.h"
+#include "check_criteria.h"
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
 
 using namespace Rcpp;
 
@@ -66,10 +69,21 @@ arma::vec padmm(arma::vec beta0,
     old_theta = theta;
     theta = new_theta;
     // check convergence criteria
-
-
-
-
+    bool crit1 = check_criterion1(X = X,
+                              beta = beta,
+                              z = z,
+                              y = y,
+                              eps1 = eps1,
+                              eps2 = eps2);
+    bool crit2 = check_criterion2(sigma = sigma,
+                                X = X,
+                                z = z,
+                                old_z = old_z,
+                                eps1 = eps1,
+                                eps2 = eps2,
+                                theta = theta);
+      iter = iter + 1;
   }
+  return beta;
 }
 

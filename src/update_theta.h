@@ -2,7 +2,7 @@
 #define UPDATE_THETA
 
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 
 arma::vec update_theta(arma::vec theta,
                        double gamma,

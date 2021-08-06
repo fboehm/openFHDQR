@@ -2,10 +2,11 @@
 #define UPDATE_Z
 
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 
 arma::vec update_z(arma::vec y,
-                   arma::vec Xbeta,
+                   arma::mat X,
+                   arma::vec beta,
                    arma::vec theta,
                    double sigma,
                    double tau);

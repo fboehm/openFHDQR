@@ -2,7 +2,7 @@
 #define UPDATE_BETA_PADMM
 
 
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 
 arma::vec update_beta_padmm(arma::vec beta,
                             arma::mat X,

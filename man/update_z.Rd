@@ -4,12 +4,14 @@
 \alias{update_z}
 \title{Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression}
 \usage{
-update_z(y, Xbeta, theta, sigma, tau)
+update_z(y, X, beta, theta, sigma, tau)
 }
 \arguments{
 \item{y}{y vector}
 
-\item{Xbeta}{matrix product of X and beta}
+\item{X}{design matrix}
+
+\item{beta}{beta vector}
 
 \item{theta}{current state of theta parameter vector (k)}
 
