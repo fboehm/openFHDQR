@@ -9,6 +9,29 @@
 
 using namespace Rcpp;
 
+
+
+//' Perform proximal ADMM for weighted L1-penalized quantile regression
+//'
+//' @param beta0 initial value of beta
+//' @param z0 initial value of z
+//' @param theta0 initial value of theta
+//' @param sigma sigma constant, a positive number
+//' @param X design matrix
+//' @param eta eta constant
+//' @param y y vector
+//' @param l1 L1 penalty parameter
+//' @param l2 L2 penalty parameter
+//' @param w weights vector for lambda1 penalty
+//' @param nu weights vector for lambda2 penalty
+//' @param tau quantile, a number between 0 and 1
+//' @param gamma gamma constant, affects the step length in the theta update step
+//' @param maxiter maximum number of iterations
+//' @param eps1 epsilon1 constant for stopping
+//' @param eps2 epsilon2 constant for stopping
+//' @return beta, the vector of coefficient estimates
+//' @export
+// [[Rcpp::export()]]
 arma::vec padmm(arma::vec beta0,
                 arma::vec z0,
                 arma::vec theta0,
