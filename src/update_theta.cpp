@@ -17,10 +17,7 @@ using namespace Rcpp;
 //' @param y y vector
 //' @return updated theta vector
 //' @export
-
 // [[Rcpp::interfaces(r, cpp)]]
-
-// [[Rcpp::export]]
 arma::vec update_theta(arma::vec theta,
                              double gamma,
                              double sigma,

@@ -30,9 +30,7 @@ padmm <- function(beta0, z0, theta0, sigma, X, eta, y, l1, l2, w, nu, tau, gamma
 #' @param u a numeric vector of length one
 #' @param alpha a numeric vector of length one
 #' @return a numeric vector of length one, the output of the soft shrinkage operator
-shrink <- function(u, alpha) {
-    .Call(`_openFHDQR_shrink`, u, alpha)
-}
+NULL
 
 #' Perform proximal mapping of rho tau
 #'
@@ -40,9 +38,7 @@ shrink <- function(u, alpha) {
 #' @param alpha a number
 #' @param tau a number between 0 and 1, the quantile of interest
 #' @return output of the proximal mapping of rho tau
-prox <- function(xi, alpha, tau) {
-    .Call(`_openFHDQR_prox`, xi, alpha, tau)
-}
+NULL
 
 #' Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression
 #'
@@ -59,27 +55,7 @@ prox <- function(xi, alpha, tau) {
 #' @param nu weights vector for L2 penalty
 #' @return updated beta vector
 #' @family proximal ADMM for weighted L1 penalized quantile regression
-#' @export
-update_beta_padmm <- function(beta, X, theta, sigma, eta, y, z, l1, l2, w, nu) {
-    .Call(`_openFHDQR_update_beta_padmm`, beta, X, theta, sigma, eta, y, z, l1, l2, w, nu)
-}
-
-#' Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
-#'
-#' @param theta current state of theta (k)
-#' @param gamma gamma constant
-#' @param sigma sigma constant
-#' @param X design matrix
-#' @param beta current state of beta, (k + 1)
-#' @param z current state of z, (k + 1)
-#' @param y y vector
-#' @return updated theta vector
-#' @export
 NULL
-
-update_theta <- function(theta, gamma, sigma, X, beta, z, y) {
-    .Call(`_openFHDQR_update_theta`, theta, gamma, sigma, X, beta, z, y)
-}
 
 #' Update z for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 #'
@@ -91,10 +67,7 @@ update_theta <- function(theta, gamma, sigma, X, beta, z, y) {
 #' @param tau quantile, a number between 0 and 1
 #' @return updated z vector
 #' @family proximal ADMM for weighted L1 penalized quantile regression
-#' @export
-update_z <- function(y, X, beta, theta, sigma, tau) {
-    .Call(`_openFHDQR_update_z`, y, X, beta, theta, sigma, tau)
-}
+NULL
 
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {

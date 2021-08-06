@@ -20,8 +20,6 @@
 //' @param tau quantile, a number between 0 and 1
 //' @return updated z vector
 //' @family proximal ADMM for weighted L1 penalized quantile regression
-//' @export
-// [[Rcpp::export]]
 arma::vec update_z(arma::vec y,
                              arma::mat X,
                              arma::vec beta,
