@@ -51,7 +51,7 @@ arma::vec padmm(arma::vec beta0,
   arma::vec old_beta = beta0;
   arma::vec old_z = z0;
   arma::vec old_theta = theta0;
-  arma::vec beta = 2 * old_beta;
+  arma::vec beta = 1.5 * old_beta; //check this!
   arma::vec z = old_z;
   arma::vec theta = old_theta;
   int iter = 0;

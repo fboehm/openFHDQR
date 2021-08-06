@@ -30,7 +30,6 @@ arma::vec update_z(arma::vec y,
                          double tau){
   const int n = y.n_elem;
   arma::vec new_z;
-  new_z.zeros(n);
   arma::vec arg1 = y - X * beta + theta / sigma;
   for(int i = 0; i < n; ++i){
     new_z[i] = prox(arg1[i], sigma * n, tau);
