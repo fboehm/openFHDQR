@@ -1,5 +1,7 @@
 #include <RcppArmadillo.h>
 #include <math.h> //sqrt
+#include <algorithm> //max_element
+#include "check_criteria.h"
 using namespace Rcpp;
 
 
@@ -12,7 +14,12 @@ bool check_criterion1(arma::mat X,
                       double eps1,
                       double eps2){
   const int n = y.n_elem;
-  bool result = l2_norm(X * beta + z - y) <= sqrt(n) * eps1 + eps2 * max(l2_norm(X * beta), l2_norm(z), l2_norm(y));
+  std::vector<double> norms;
+  norms[0] = l2_norm(X * beta);
+  norms[1] = l2_norm(z);
+  norms[2] = l2_norm(y);
+  double mm = *max_element(norms.begin(), norms.end());
+  bool result = l2_norm(X * beta + z - y) <= sqrt(n) * eps1 + eps2 * mm;
   return result;
 }
 
