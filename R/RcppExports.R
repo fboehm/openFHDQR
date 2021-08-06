@@ -44,18 +44,6 @@ prox <- function(xi, alpha, tau) {
     .Call(`_openFHDQR_prox`, xi, alpha, tau)
 }
 
-choose_col <- function(x, idx) {
-    .Call(`_openFHDQR_choose_col`, x, idx)
-}
-
-choose_row <- function(x, idx) {
-    .Call(`_openFHDQR_choose_row`, x, idx)
-}
-
-choose_element <- function(x, ridx, cidx) {
-    .Call(`_openFHDQR_choose_element`, x, ridx, cidx)
-}
-
 #' Update beta for the proximal ADMM for weighted elastic net-penalized quantile regression
 #'
 #' @param beta current state of the beta parameter vector

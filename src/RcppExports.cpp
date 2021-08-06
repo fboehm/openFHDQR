@@ -111,43 +111,6 @@ RcppExport SEXP _openFHDQR_prox(SEXP xiSEXP, SEXP alphaSEXP, SEXP tauSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
-// choose_col
-arma::mat choose_col(arma::mat x, int idx);
-RcppExport SEXP _openFHDQR_choose_col(SEXP xSEXP, SEXP idxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type idx(idxSEXP);
-    rcpp_result_gen = Rcpp::wrap(choose_col(x, idx));
-    return rcpp_result_gen;
-END_RCPP
-}
-// choose_row
-arma::mat choose_row(arma::mat x, int idx);
-RcppExport SEXP _openFHDQR_choose_row(SEXP xSEXP, SEXP idxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type idx(idxSEXP);
-    rcpp_result_gen = Rcpp::wrap(choose_row(x, idx));
-    return rcpp_result_gen;
-END_RCPP
-}
-// choose_element
-arma::mat choose_element(arma::mat x, int ridx, int cidx);
-RcppExport SEXP _openFHDQR_choose_element(SEXP xSEXP, SEXP ridxSEXP, SEXP cidxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type ridx(ridxSEXP);
-    Rcpp::traits::input_parameter< int >::type cidx(cidxSEXP);
-    rcpp_result_gen = Rcpp::wrap(choose_element(x, ridx, cidx));
-    return rcpp_result_gen;
-END_RCPP
-}
 // update_beta_padmm
 arma::vec update_beta_padmm(arma::vec beta, arma::mat X, arma::vec theta, double sigma, double eta, arma::vec y, arma::vec z, double l1, double l2, arma::vec w, arma::vec nu);
 RcppExport SEXP _openFHDQR_update_beta_padmm(SEXP betaSEXP, SEXP XSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP zSEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP wSEXP, SEXP nuSEXP) {
@@ -275,9 +238,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_openFHDQR_padmm", (DL_FUNC) &_openFHDQR_padmm, 16},
     {"_openFHDQR_shrink", (DL_FUNC) &_openFHDQR_shrink, 2},
     {"_openFHDQR_prox", (DL_FUNC) &_openFHDQR_prox, 3},
-    {"_openFHDQR_choose_col", (DL_FUNC) &_openFHDQR_choose_col, 2},
-    {"_openFHDQR_choose_row", (DL_FUNC) &_openFHDQR_choose_row, 2},
-    {"_openFHDQR_choose_element", (DL_FUNC) &_openFHDQR_choose_element, 3},
     {"_openFHDQR_update_beta_padmm", (DL_FUNC) &_openFHDQR_update_beta_padmm, 11},
     {"_openFHDQR_update_theta", (DL_FUNC) &_openFHDQR_update_theta, 7},
     {"_openFHDQR_update_z", (DL_FUNC) &_openFHDQR_update_z, 6},
