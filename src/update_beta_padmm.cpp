@@ -37,7 +37,7 @@ arma::vec update_beta_padmm(arma::vec beta,
   const int p = beta.size();
   arma::vec new_beta(p);
   arma::vec denom = sigma * eta + l2 * nu;
-  arma::vec arg1 = (theta + sigma * y - sigma * X * beta - sigma * z) / denom;
+  arma::vec arg1 = (theta + sigma * y - sigma * X * beta - sigma * z); // check here!
   for (int j = 0; j < p; ++j){
     arma::mat Xcol = choose_col(X, j);
     double t1 = sigma * eta * beta[j] + (Xcol * arg1).eval()(0,0);
