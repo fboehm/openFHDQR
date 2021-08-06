@@ -14,6 +14,32 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// padmm
+arma::vec padmm(arma::vec beta0, arma::vec z0, arma::vec theta0, double sigma, arma::mat X, double eta, arma::vec y, double l1, double l2, arma::vec w, arma::vec nu, double tau, double gamma, int max_iter, double eps1, double eps2);
+RcppExport SEXP _openFHDQR_padmm(SEXP beta0SEXP, SEXP z0SEXP, SEXP theta0SEXP, SEXP sigmaSEXP, SEXP XSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP wSEXP, SEXP nuSEXP, SEXP tauSEXP, SEXP gammaSEXP, SEXP max_iterSEXP, SEXP eps1SEXP, SEXP eps2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type beta0(beta0SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type z0(z0SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta0(theta0SEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type l1(l1SEXP);
+    Rcpp::traits::input_parameter< double >::type l2(l2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type w(wSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type eps1(eps1SEXP);
+    Rcpp::traits::input_parameter< double >::type eps2(eps2SEXP);
+    rcpp_result_gen = Rcpp::wrap(padmm(beta0, z0, theta0, sigma, X, eta, y, l1, l2, w, nu, tau, gamma, max_iter, eps1, eps2));
+    return rcpp_result_gen;
+END_RCPP
+}
 // shrink
 double shrink(double u, double alpha);
 static SEXP _openFHDQR_shrink_try(SEXP uSEXP, SEXP alphaSEXP) {
@@ -246,6 +272,7 @@ RcppExport SEXP _openFHDQR_RcppExport_registerCCallable() {
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_openFHDQR_padmm", (DL_FUNC) &_openFHDQR_padmm, 16},
     {"_openFHDQR_shrink", (DL_FUNC) &_openFHDQR_shrink, 2},
     {"_openFHDQR_prox", (DL_FUNC) &_openFHDQR_prox, 3},
     {"_openFHDQR_choose_col", (DL_FUNC) &_openFHDQR_choose_col, 2},
