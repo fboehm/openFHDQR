@@ -21,6 +21,7 @@ using namespace Rcpp;
 //' @param nu weights vector for L2 penalty
 //' @return updated beta vector
 //' @family proximal ADMM for weighted L1 penalized quantile regression
+// [[Rcpp::export()]]
 arma::vec update_beta_padmm(arma::vec beta,
                                       arma::mat X,
                                       arma::vec theta,

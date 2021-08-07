@@ -5,6 +5,7 @@
 #include <RcppArmadillo.h>
 #include "shrink.h"
 
+using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::interfaces(r, cpp)]]
@@ -20,14 +21,15 @@
 //' @param tau quantile, a number between 0 and 1
 //' @return updated z vector
 //' @family proximal ADMM for weighted L1 penalized quantile regression
+// [[Rcpp::export()]]
 arma::vec update_z(arma::vec y,
                              arma::mat X,
                              arma::vec beta,
                              arma::vec theta,
                          double sigma,
                          double tau){
-  const int n = y.n_elem;
-  arma::vec new_z;
+  int n = y.n_elem;
+  arma::vec new_z = theta;
   arma::vec arg1 = y - X * beta + theta / sigma;
   for(int i = 0; i < n; ++i){
     new_z[i] = prox(arg1[i], sigma * n, tau);

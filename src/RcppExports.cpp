@@ -14,6 +14,50 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// check_criterion1
+bool check_criterion1(arma::mat X, arma::vec beta, arma::vec z, arma::vec y, double eps1, double eps2);
+RcppExport SEXP _openFHDQR_check_criterion1(SEXP XSEXP, SEXP betaSEXP, SEXP zSEXP, SEXP ySEXP, SEXP eps1SEXP, SEXP eps2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< double >::type eps1(eps1SEXP);
+    Rcpp::traits::input_parameter< double >::type eps2(eps2SEXP);
+    rcpp_result_gen = Rcpp::wrap(check_criterion1(X, beta, z, y, eps1, eps2));
+    return rcpp_result_gen;
+END_RCPP
+}
+// check_criterion2
+bool check_criterion2(double sigma, arma::mat X, arma::vec z, arma::vec old_z, double eps1, double eps2, arma::vec theta);
+RcppExport SEXP _openFHDQR_check_criterion2(SEXP sigmaSEXP, SEXP XSEXP, SEXP zSEXP, SEXP old_zSEXP, SEXP eps1SEXP, SEXP eps2SEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type old_z(old_zSEXP);
+    Rcpp::traits::input_parameter< double >::type eps1(eps1SEXP);
+    Rcpp::traits::input_parameter< double >::type eps2(eps2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(check_criterion2(sigma, X, z, old_z, eps1, eps2, theta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// l2_norm
+double l2_norm(arma::vec const& u);
+RcppExport SEXP _openFHDQR_l2_norm(SEXP uSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec const& >::type u(uSEXP);
+    rcpp_result_gen = Rcpp::wrap(l2_norm(u));
+    return rcpp_result_gen;
+END_RCPP
+}
 // padmm
 arma::vec padmm(arma::vec beta0, arma::vec z0, arma::vec theta0, double sigma, arma::mat X, double eta, arma::vec y, double l1, double l2, arma::vec w, arma::vec nu, double tau, double gamma, int max_iter, double eps1, double eps2);
 RcppExport SEXP _openFHDQR_padmm(SEXP beta0SEXP, SEXP z0SEXP, SEXP theta0SEXP, SEXP sigmaSEXP, SEXP XSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP wSEXP, SEXP nuSEXP, SEXP tauSEXP, SEXP gammaSEXP, SEXP max_iterSEXP, SEXP eps1SEXP, SEXP eps2SEXP) {
@@ -40,23 +84,249 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// shrink
+double shrink(double u, double alpha);
+static SEXP _openFHDQR_shrink_try(SEXP uSEXP, SEXP alphaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type u(uSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    rcpp_result_gen = Rcpp::wrap(shrink(u, alpha));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _openFHDQR_shrink(SEXP uSEXP, SEXP alphaSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_openFHDQR_shrink_try(uSEXP, alphaSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// prox
+double prox(double xi, double alpha, double tau);
+static SEXP _openFHDQR_prox_try(SEXP xiSEXP, SEXP alphaSEXP, SEXP tauSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type xi(xiSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
+    rcpp_result_gen = Rcpp::wrap(prox(xi, alpha, tau));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _openFHDQR_prox(SEXP xiSEXP, SEXP alphaSEXP, SEXP tauSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_openFHDQR_prox_try(xiSEXP, alphaSEXP, tauSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// choose_col
+arma::mat choose_col(arma::mat x, int idx);
+RcppExport SEXP _openFHDQR_choose_col(SEXP xSEXP, SEXP idxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type idx(idxSEXP);
+    rcpp_result_gen = Rcpp::wrap(choose_col(x, idx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// choose_row
+arma::mat choose_row(arma::mat x, int idx);
+RcppExport SEXP _openFHDQR_choose_row(SEXP xSEXP, SEXP idxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type idx(idxSEXP);
+    rcpp_result_gen = Rcpp::wrap(choose_row(x, idx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// choose_element
+arma::mat choose_element(arma::mat x, int ridx, int cidx);
+RcppExport SEXP _openFHDQR_choose_element(SEXP xSEXP, SEXP ridxSEXP, SEXP cidxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type ridx(ridxSEXP);
+    Rcpp::traits::input_parameter< int >::type cidx(cidxSEXP);
+    rcpp_result_gen = Rcpp::wrap(choose_element(x, ridx, cidx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// update_beta_padmm
+arma::vec update_beta_padmm(arma::vec beta, arma::mat X, arma::vec theta, double sigma, double eta, arma::vec y, arma::vec z, double l1, double l2, arma::vec w, arma::vec nu);
+RcppExport SEXP _openFHDQR_update_beta_padmm(SEXP betaSEXP, SEXP XSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP etaSEXP, SEXP ySEXP, SEXP zSEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP wSEXP, SEXP nuSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< double >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type z(zSEXP);
+    Rcpp::traits::input_parameter< double >::type l1(l1SEXP);
+    Rcpp::traits::input_parameter< double >::type l2(l2SEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type w(wSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type nu(nuSEXP);
+    rcpp_result_gen = Rcpp::wrap(update_beta_padmm(beta, X, theta, sigma, eta, y, z, l1, l2, w, nu));
+    return rcpp_result_gen;
+END_RCPP
+}
+// update_theta_diff
+arma::vec update_theta_diff(double gamma, double sigma, arma::mat X, arma::vec beta, arma::vec z, arma::vec y);
+static SEXP _openFHDQR_update_theta_diff_try(SEXP gammaSEXP, SEXP sigmaSEXP, SEXP XSEXP, SEXP betaSEXP, SEXP zSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(update_theta_diff(gamma, sigma, X, beta, z, y));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _openFHDQR_update_theta_diff(SEXP gammaSEXP, SEXP sigmaSEXP, SEXP XSEXP, SEXP betaSEXP, SEXP zSEXP, SEXP ySEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_openFHDQR_update_theta_diff_try(gammaSEXP, sigmaSEXP, XSEXP, betaSEXP, zSEXP, ySEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// update_z
+arma::vec update_z(arma::vec y, arma::mat X, arma::vec beta, arma::vec theta, double sigma, double tau);
+static SEXP _openFHDQR_update_z_try(SEXP ySEXP, SEXP XSEXP, SEXP betaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< double >::type tau(tauSEXP);
+    rcpp_result_gen = Rcpp::wrap(update_z(y, X, beta, theta, sigma, tau));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _openFHDQR_update_z(SEXP ySEXP, SEXP XSEXP, SEXP betaSEXP, SEXP thetaSEXP, SEXP sigmaSEXP, SEXP tauSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_openFHDQR_update_z_try(ySEXP, XSEXP, betaSEXP, thetaSEXP, sigmaSEXP, tauSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 
 // validate (ensure exported C++ functions exist before calling them)
 static int _openFHDQR_RcppExport_validate(const char* sig) { 
     static std::set<std::string> signatures;
     if (signatures.empty()) {
+        signatures.insert("double(*shrink)(double,double)");
+        signatures.insert("double(*prox)(double,double,double)");
+        signatures.insert("arma::vec(*update_theta_diff)(double,double,arma::mat,arma::vec,arma::vec,arma::vec)");
+        signatures.insert("arma::vec(*update_z)(arma::vec,arma::mat,arma::vec,arma::vec,double,double)");
     }
     return signatures.find(sig) != signatures.end();
 }
 
 // registerCCallable (register entry points for exported C++ functions)
 RcppExport SEXP _openFHDQR_RcppExport_registerCCallable() { 
+    R_RegisterCCallable("openFHDQR", "_openFHDQR_shrink", (DL_FUNC)_openFHDQR_shrink_try);
+    R_RegisterCCallable("openFHDQR", "_openFHDQR_prox", (DL_FUNC)_openFHDQR_prox_try);
+    R_RegisterCCallable("openFHDQR", "_openFHDQR_update_theta_diff", (DL_FUNC)_openFHDQR_update_theta_diff_try);
+    R_RegisterCCallable("openFHDQR", "_openFHDQR_update_z", (DL_FUNC)_openFHDQR_update_z_try);
     R_RegisterCCallable("openFHDQR", "_openFHDQR_RcppExport_validate", (DL_FUNC)_openFHDQR_RcppExport_validate);
     return R_NilValue;
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_openFHDQR_check_criterion1", (DL_FUNC) &_openFHDQR_check_criterion1, 6},
+    {"_openFHDQR_check_criterion2", (DL_FUNC) &_openFHDQR_check_criterion2, 7},
+    {"_openFHDQR_l2_norm", (DL_FUNC) &_openFHDQR_l2_norm, 1},
     {"_openFHDQR_padmm", (DL_FUNC) &_openFHDQR_padmm, 16},
+    {"_openFHDQR_shrink", (DL_FUNC) &_openFHDQR_shrink, 2},
+    {"_openFHDQR_prox", (DL_FUNC) &_openFHDQR_prox, 3},
+    {"_openFHDQR_choose_col", (DL_FUNC) &_openFHDQR_choose_col, 2},
+    {"_openFHDQR_choose_row", (DL_FUNC) &_openFHDQR_choose_row, 2},
+    {"_openFHDQR_choose_element", (DL_FUNC) &_openFHDQR_choose_element, 3},
+    {"_openFHDQR_update_beta_padmm", (DL_FUNC) &_openFHDQR_update_beta_padmm, 11},
+    {"_openFHDQR_update_theta_diff", (DL_FUNC) &_openFHDQR_update_theta_diff, 6},
+    {"_openFHDQR_update_z", (DL_FUNC) &_openFHDQR_update_z, 6},
     {"_openFHDQR_RcppExport_registerCCallable", (DL_FUNC) &_openFHDQR_RcppExport_registerCCallable, 0},
     {NULL, NULL, 0}
 };

@@ -57,9 +57,14 @@ arma::vec padmm(arma::vec beta0,
   int iter = 0;
   bool crit1 = false;
   bool crit2 = false;
+  arma::vec new_beta = beta0;
+  arma::vec new_z = z0;
+  arma::vec new_theta = theta0;
+  arma::vec diff;
   while (iter < max_iter && (!crit1 || !crit2)) {
+  //for (int k = 0; k < 10; ++k){
     // Step 2.1
-    arma::vec new_beta = update_beta_padmm(beta = beta,
+    new_beta = update_beta_padmm(beta = beta,
                                    X = X,
                                    theta = theta,
                                    sigma = sigma,
@@ -73,7 +78,7 @@ arma::vec padmm(arma::vec beta0,
     old_beta = beta;
     beta = new_beta;
     // Step 2.2
-    arma::vec new_z = update_z(y = y,
+    new_z = update_z(y = y,
                        X = X,
                        beta = beta,
                        theta = theta,
@@ -82,25 +87,19 @@ arma::vec padmm(arma::vec beta0,
     old_z = z;
     z = new_z;
     // Step 2.3
-    arma::vec new_theta = update_theta(theta = theta,
-                               gamma = gamma,
-                               sigma = sigma,
-                               X = X,
-                               beta = beta,
-                               z = z,
-                               y = y);
-    old_theta = theta;
-    theta = new_theta;
+    diff = - gamma * sigma * (X * beta + z - y);
+    theta = theta + diff;
+
     // check convergence criteria
-    bool crit1 = check_criterion1(X = X,
+    crit1 = check_criterion1(X = X,
                               beta = beta,
                               z = z,
                               y = y,
                               eps1 = eps1,
                               eps2 = eps2);
-    bool crit2 = check_criterion2(sigma = sigma,
+    crit2 = check_criterion2(sigma = sigma,
                                 X = X,
-                                z = z,
+                              z = z,
                                 old_z = old_z,
                                 eps1 = eps1,
                                 eps2 = eps2,

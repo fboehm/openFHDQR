@@ -8,7 +8,6 @@ using namespace Rcpp;
 
 //' Update theta for the proximal ADMM or scd ADMM for weighted L1-penalized quantile regression
 //'
-//' @param theta current state of theta (k)
 //' @param gamma gamma constant
 //' @param sigma sigma constant
 //' @param X design matrix
@@ -18,14 +17,15 @@ using namespace Rcpp;
 //' @return updated theta vector
 //' @export
 // [[Rcpp::interfaces(r, cpp)]]
-arma::vec update_theta(arma::vec theta,
+// [[Rcpp::export()]]
+arma::vec update_theta_diff(
                              double gamma,
                              double sigma,
                              arma::mat X,
                              arma::vec beta,
                              arma::vec z,
                              arma::vec y){
-  arma::vec out = theta - gamma * sigma * (X * beta + z - y);
+  arma::vec out = - gamma * sigma * (X * beta + z - y);
   return out;
 }
 

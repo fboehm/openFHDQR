@@ -22,7 +22,7 @@ update_beta_padmmR <- function(beta, X, theta, sigma, eta, y, z, l1, l2 = 0, w, 
   for (j in seq_along(beta)){
     t1 <- sigma * eta * beta[j] + X[, j] %*% arg1
     t2 <- l1 * w[j]
-    new_beta[j] <- shrink(t1, t2) / denom[j]
+    new_beta[j] <- shrinkR(t1, t2) / denom[j]
   }
   return(new_beta)
 }
@@ -43,7 +43,7 @@ update_zR <- function(y, X, beta, theta, sigma, tau){
   new_z <- numeric()
   alpha <- length(y) * sigma
   for (i in seq_along(y)){
-    new_z[i] <- prox(xi = y[i] - X[i, ] %*% beta + theta[i] / sigma,
+    new_z[i] <- proxR(xi = y[i] - X[i, ] %*% beta + theta[i] / sigma,
                      alpha = alpha,
                      tau = tau)
   }
@@ -106,7 +106,7 @@ padmmR <- function(beta0 = rep(0, ncol(X)),
   old_beta <- beta0
   old_z <- z0
   old_theta <- theta0
-  beta <- old_beta + 0.001
+  beta <- old_beta * 1.5
   z <- old_z
   theta <- old_theta
   iter <- 0
@@ -146,13 +146,13 @@ padmmR <- function(beta0 = rep(0, ncol(X)),
     old_theta <- theta
     theta <- new_theta
     ## check convergence criteria
-    crit1 <- check_criterion1(X = X,
+    crit1 <- check_criterion1R(X = X,
                               beta = beta,
                               z = z,
                               y = y,
                               epsilon1 = epsilon1,
                               epsilon2 = epsilon2)
-    crit2 <- check_criterion2(sigma = sigma,
+    crit2 <- check_criterion2R(sigma = sigma,
                               X = X,
                               z = z,
                               old_z = old_z,
@@ -175,7 +175,7 @@ padmmR <- function(beta0 = rep(0, ncol(X)),
 #' @return a logical vector of length one. TRUE if criterion 1 is satisfied and FALSE otherwise
 #' @export
 
-check_criterion1 <- function(X, beta, z, y, epsilon1, epsilon2){
+check_criterion1R <- function(X, beta, z, y, epsilon1, epsilon2){
   n <- length(y)
   return(norm_vec(X %*% beta + z - y) <= sqrt(n) * epsilon1 + epsilon2 * max(norm_vec(X %*% beta), norm_vec(z), norm_vec(y)))
 }
@@ -192,7 +192,7 @@ check_criterion1 <- function(X, beta, z, y, epsilon1, epsilon2){
 #' @return a logical vector of length one. TRUE if criterion 2 is satisfied and FALSE otherwise
 #' @export
 
-check_criterion2 <- function(sigma, X, z, old_z, epsilon1, epsilon2, theta){
+check_criterion2R <- function(sigma, X, z, old_z, epsilon1, epsilon2, theta){
   p <- ncol(X)
   return(sigma * norm_vec(t(X) %*% (z - old_z)) <= sqrt(p) * epsilon1 + epsilon2 * norm_vec(t(X) %*% theta))
 }
