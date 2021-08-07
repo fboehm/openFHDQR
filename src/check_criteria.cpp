@@ -1,6 +1,6 @@
 #include <RcppArmadillo.h>
 #include <math.h> //sqrt
-#include <algorithm> //max_element
+#include <algorithm> //max_element & std::max
 #include "check_criteria.h"
 using namespace Rcpp;
 
